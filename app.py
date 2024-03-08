@@ -68,6 +68,9 @@ def add_properties():
                     )
     repository.add(property)
     return "" , 200 
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
