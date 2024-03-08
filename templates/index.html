@@ -28,8 +28,8 @@
         <ul>
             {% for property in properties %}
                 <li>
-                    <a href="/properties/{{ property.id }}"> <!-- Replace "/properties/{{ property.id }}" with the appropriate URL for viewing a specific property -->
-                        {{ property.name }} - User {{ property.location }} - Price per night {{ property.price}}
+                    <a href="/properties/{{property._id}}">
+                        {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
                     </a>
                 </li>
             {% endfor %}
@@ -40,7 +40,7 @@
             {% endfor %}
         </ul> -->
     {% else %}
-        <p>There are currently no properties to book.</p>
+        <h2>There are currently no properties to book.</h2>
     {% endif %}
 </body>
 </html>

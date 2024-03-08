@@ -11,6 +11,7 @@ pytest-playwright = "*"
 pytest-xprocess = "*"
 py = "*"
 playwright = "*"
+flask-session = "*"
 
 [dev-packages]
 autopep8 = "*"
