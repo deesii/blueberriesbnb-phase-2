@@ -31,6 +31,6 @@ class UserRepository():
     def check_email_exists(self,email):
         user_email = email
         if self.find_user(user_email) != None:
-            return "Logged in successfully!"
+            return True
         else:
-            return "Please create an account!"
+            return False

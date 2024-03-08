@@ -63,8 +63,7 @@ def test_check_email_exists(db_connection):
     db_connection.seed("seeds/blueberries_bnb.sql")
     repository = UserRepository(db_connection)
     result = repository.check_email_exists('email3@email.com')
-    assert result == "Logged in successfully!"
-
+    assert result == True
 
 """ 
 When an email is provided, if it is not in the database,
@@ -74,5 +73,4 @@ def test_check_email_does_not_exist(db_connection):
     db_connection.seed("seeds/blueberries_bnb.sql")
     repository = UserRepository(db_connection)
     result = repository.check_email_exists('email7@email.com')
-    print(f"Actual result: {result}")
-    assert result == "Please create an account!"
+    assert result == False

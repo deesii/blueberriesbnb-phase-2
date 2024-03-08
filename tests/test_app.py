@@ -32,6 +32,19 @@ def test_get_index(page, test_web_address, db_connection):
 #     # We assert that it has the text "This is the homepage."
 #     expect(strong_tag).to_have_text("This is the blueberries b&b homepage.")
 
+
+'''
+We can render the register page
+
+'''
+def test_render_register(page, test_web_address):
+    page.goto(f"http://{test_web_address}/register")
+    heading_tag = page.locator("h1")
+    title_tag = page.locator("title")
+    expect(heading_tag).to_have_text("Registration page")
+    expect(title_tag).to_have_text("BlueberryBnB Registration")
+
+
 """
 Test property information and booking page loads and has input fields with labels
 """
