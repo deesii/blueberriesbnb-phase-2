@@ -4,6 +4,8 @@ from flask_session import Session
 from lib.database_connection import get_flask_database_connection
 from lib.property_repository import PropertyRepository
 from lib.property import Property
+from lib.user_repository import UserRepository
+from lib.user import User
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -16,6 +18,26 @@ app = Flask(__name__)
 # Try it:
 #   ; open http://localhost:5001/index
 
+@app.route('/register', methods = ['POST', 'GET'])
+def get_registration_page():
+    if request.method == 'POST':
+        email_from_form = request.form.get('email')
+        if email_from_form:
+            # connection = get_flask_database_connection(app)
+            # repository = UserRepository(connection)
+            # new_user = User(None, email=email_from_form) 
+            # if repository.check_email_exists(new_user) == "Please create an account!":
+            #     repository.create_new_user(new_user)
+            return render_template('successful_registration.html', email=email_from_form)
+            # else:
+            #     return "Email has already been registered!"
+            
+        else:
+            return "Email is required for registration"
+
+    else:
+        return render_template('register.html')
+    
 @app.route('/', methods=['GET'])
 def get_properties():
     connection = get_flask_database_connection(app)
