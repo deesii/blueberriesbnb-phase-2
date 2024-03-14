@@ -1,4 +1,18 @@
 body {
     font-size: 18px;
-
+    background-image:url('https://png.pngtree.com/thumb_back/fh260/background/20190223/ourmid/pngtree-starry-background-dot-starlight-and-galaxy-background-material-backgroundgalaxystarblackspaceuniverse-image_86868.jpg');
+    background-size: cover;
+    color: white
 }
+
+ul {
+    list-style: none;
+  }
+
+#property_link{
+    color:pink; 
+ }
+
+#property_link:hover {
+    color: white;
+ }

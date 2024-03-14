@@ -1,31 +1,27 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>MakersBnB: Book a Place</title>
+{% extends "layout.html" %}
 
-        <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <h1> {{property._property_name}} </h1>
+{% block title %}
+    Book Property
+{% endblock %}
+
+{% block main %}
+
+    <h1> {{property._property_name}} </h1>
+    
+    <p> 
+        Description: {{property._description}}<br>
+        Price per night: £{{property._price_per_night}}
+    </p>
+
+    <form action="/bookings" method="post">
+        <label for="date_from">Date From: </label>
+        <input type="date" name="date_from" value="date_from">
+        <br>
+        <label for="date_to">Date To:</label>
+        <input type="date" name="date_from" value="date_from">
+        <br><br>
+        <input type="submit" value="Create Booking">
         
-        <p> 
-            Description: {{property._description}}<br>
-            Price per night: £{{property._price_per_night}}
-        </p>
+    </form>
 
-        <form action="/bookings" method="post">
-            <label for="date_from">Date From: </label>
-            <input type="date" name="date_from" value="date_from">
-            <br>
-            <label for="date_to">Date To:</label>
-            <input type="date" name="date_from" value="date_from">
-            <br><br>
-            <input type="submit" value="Create Booking">
-            
-        </form>
-    </body>
-</html>
+{% endblock %}
