@@ -88,6 +88,10 @@ def add_properties():
     repository.add(property)
     return "" , 200 
 
+@app.route('/add_property', methods=['GET'])
+def get_add_property_page():
+    return render_template('adding_property.html')
+
 
 @app.route('/login', methods=['GET'])
 def get_login():
@@ -139,4 +143,3 @@ def login_user():
 # if started in test mode.
 if __name__ == '__main__':
     app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
-p
