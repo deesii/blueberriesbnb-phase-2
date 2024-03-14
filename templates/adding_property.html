@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Property</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block title %}
+    Add New Property
+{% endblock %}
+
+{% block main %}
+
     <h1>Add New Property</h1>
     <form action="/add_property" method="post">
         <label for="property_name">Property Name:</label>
@@ -14,5 +14,5 @@
         <input type="text" id="property_location" name="property_location"><br><br>
         <button type="submit">Add Property</button>
     </form>
-</body>
-</html>
+
+{% endblock %}

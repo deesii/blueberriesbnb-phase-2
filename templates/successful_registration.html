@@ -1,14 +1,13 @@
-<html>
+{% extends "layout.html" %}
 
-<head></head>
-<body>
+{% block title %}
+    Successful registration
+{% endblock %}
+
+{% block main %}
 
 <h2> You have successfully registered with the following email: {{ email }} </h2>
 
 <a href= "/">Back to Home</a>
 
-</body>
-
-
-
-</html>
+{% endblock %}

@@ -1,34 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MakersBnB</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <style>
-        /* CSS for background */
-        body {
-            background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20190223/ourmid/pngtree-starry-background-dot-starlight-and-galaxy-background-material-backgroundgalaxystarblackspaceuniverse-image_86868.jpg"); /* Replace with the path to your background image */
-            background-size: cover; /* Cover the entire background */
-            background-repeat: no-repeat; /* Prevent background from repeating */
-            /* You can also add other background properties like background-color, background-position, etc. */
-        }
-    </style>
-    <style>
-        /* CSS to resize the logo */
-        img.logo {
-            width: 100px; /* Adjust the width as needed */
-            height: auto; /* Maintain aspect ratio */
-        }
-    </style>
-</head>
-<body>
-    <img src="https://logo.com/image-cdn/images/kts928pd/production/6055d644931aa1db5ec7ad0c7afc4544e4e8ae59-347x344.png?w=1080&q=72" alt="MakersBnB Logo">
-    <p>This is the blueberries b&b homepage.</p>    
+{% extends "layout.html" %}
+
+{% block title %}
+    homepage
+{% endblock %}
+
+{% block main %}
+
+
     {% if properties %}
         <h2>Property Listings</h2>
         <ul>
             {% for property in properties %}
                 <li>
-                    <a href="/properties/{{property._id}}">
+                    <a id="property_link" href="/properties/{{property._id}}">
                         {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
                     </a>
                 </li>
@@ -42,18 +26,6 @@
     {% else %}
         <h2>There are currently no properties to book.</h2>
     {% endif %}
-</body>
-</html>
-    <head>
-        <title>MakersBnB</title>
 
-        <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <p>This is the homepage.</h1>
-    </body>
-</html>
+{% endblock %}
+
