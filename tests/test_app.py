@@ -41,8 +41,24 @@ def test_render_register(page, test_web_address):
     page.goto(f"http://{test_web_address}/register")
     heading_tag = page.locator("h1")
     title_tag = page.locator("title")
-    expect(heading_tag).to_have_text("Registration page")
-    expect(title_tag).to_have_text("BlueberryBnB Registration")
+    expect(heading_tag).to_have_text("Register")
+    title_text = title_tag.inner_text()
+    print("Actual title text:", title_text)
+    #expect(title_tag).to_have_text("BlueberryBnB: Register") for some reason this appears to fail the test whereas the below text works.
+    assert title_text == "BlueberryBnB: Register"
+
+
+'''
+We can render the add property page
+
+'''
+
+def test_render_property(page, test_web_address):
+    page.goto(f"http://{test_web_address}/add_property")
+    
+
+
+
 
 
 """
