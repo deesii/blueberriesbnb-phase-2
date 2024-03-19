@@ -7,12 +7,15 @@
 {% block main %}
 
     <h1>Add New Property</h1>
-    <form action="/add_property" method="post">
-        <label for="property_name">Property Name:</label>
-        <input type="text" id="property_name" name="property_name"><br><br>
-        <label for="property_location">Property Location:</label>
-        <input type="text" id="property_location" name="property_location"><br><br>
-        <button type="submit">Add Property</button>
-    </form>
-
+    <div class = "container">
+        <form class = "form_add_property" action="/add_property" method="post">
+            <label for="property_name_label">Property name</label>
+            <input type = "text" name = "property_name" id = "property_name" placeholder = "Choose a short & snappy property name..."/><br><br>
+            <label for="description_label">Description</label>
+            <textarea name = "description" id = "description" rows="4" cols="50" placeholder = "Describe your property..."/></textarea><br><br>
+            <label for="price_per_night_label">Price per night</label>
+            <input type = "text" name = "price_per_night" id = "price_per_night" placeholder = "Enter the price per night"/><br><br>
+            <input type="submit" name = "submit_add_property" id = "submit_add_property" value= "Add Property">
+        </form>
+    </div>
 {% endblock %}
