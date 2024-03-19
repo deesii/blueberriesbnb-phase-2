@@ -80,25 +80,27 @@ def add_properties():
     property_name_from_form = request.form.get('property_name')
     description_from_form = request.form.get('description')
     price_per_night_from_form = request.form.get('price_per_night')
-
-    # I want the session to record the user that is logged in, and input it into the filed of "user_id"
-    
-    # session["user_id"] = user.id
-
+    user = session["user_id"]
 
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = Property(None,
                     property_name_from_form,
-                    None,
+                    user,
                     description_from_form,
                     price_per_night_from_form
                     )
     repository.add(property)
-    return "" , 200 
+    return redirect("/") 
 
 @app.route('/add_property', methods=['GET'])
 def get_add_property_page():
+
+    # if "user_id" not in session:
+    #     return render_template("login.html")
+
+    # user = session["user_id"]
+    # print(f"the user id is {user}")
     return render_template('adding_property.html')
 
 
