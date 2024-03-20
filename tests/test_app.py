@@ -147,3 +147,34 @@ def test_post_property_incomplete(db_connection, web_client):
     response = web_client.post('/add_property', data = {'user_id': "3", 'description' : "wet", 'price_per_night' : "23.40"})
     assert response.status_code == 400
     assert response.data.decode('utf-8') == 'One of the inputs is not filled in!'
+
+
+'''
+When you click on the logout page, you hve the status code for redirecting to the index page
+
+'''
+
+def test_logout_redirect(db_connection, web_client):
+    db_connection.seed("seeds/blueberries_bnb.sql") 
+    response = web_client.get('/logout')
+    assert response.status_code == 302 
+
+
+# '''
+# When I click on the logout page, the session clear actually takes place
+# '''
+
+# def test_logout_clears_session(test_web_address, page, db_connection, web_client):
+#     db_connection.seed("seeds/blueberries_bnb.sql") 
+#     with web_client.session_transaction() as session:
+#         session['user_id'] = '3'
+#     page.goto(f"http://{test_web_address}/")
+#     page.click('a.nav-link[href="/logout"]')
+    
+    
+#     page.wait_for_navigation(timeout=60000)
+    
+#     #page.goto(f"http://{test_web_address}/logout")
+    
+#     with web_client.session_transaction() as session:
+#         assert 'user_id' not in session

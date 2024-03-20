@@ -137,6 +137,16 @@ def login_user():
     else:
         return render_template("login.html")
 
+@app.route("/logout")
+def logout_user():
+    """Log user out"""
+    session.clear()
+
+    return redirect("/"), 302
+    
+
+
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
