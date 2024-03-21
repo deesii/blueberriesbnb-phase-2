@@ -56,6 +56,8 @@ INSERT INTO properties (property_name, user_id, description, price_per_night) VA
 INSERT INTO properties (property_name, user_id, description, price_per_night) VALUES ('Property5', 4, 'cloud', 83.20);
 INSERT INTO bookings (property_id, dates_booked_from, dates_booked_to, approved, booker_id) VALUES (1, '2024-03-27', '2024-03-29', TRUE, 2);
 INSERT INTO bookings (property_id, dates_booked_from, dates_booked_to, approved, booker_id) VALUES (3, '2024-07-01', '2024-07-10', TRUE, 4);
+INSERT INTO bookings (property_id, dates_booked_from, dates_booked_to, approved, booker_id) VALUES (3, '2024-06-01', '2024-06-10', TRUE, 4);
+INSERT INTO bookings (property_id, dates_booked_from, dates_booked_to, approved, booker_id) VALUES (3, '2024-05-01', '2024-05-10', FALSE, 4);
 
 
 
