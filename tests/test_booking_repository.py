@@ -12,6 +12,8 @@ def test_create_booking(db_connection):
     result = repository.show_user_bookings(4)
     assert result == [
         Booking(3, '2024-07-01', '2024-07-10', True, 4),
+        Booking(3, '2024-06-01', '2024-06-10', True, 4),
+        Booking(3, '2024-05-01', '2024-05-10', False, 4),
         Booking(3, '2024-08-01', '2024-08-02', True, 4)
     ] 
 
@@ -35,5 +37,7 @@ def test_show_property_bookings(db_connection):
     repository = BookingRepository(db_connection)
     result = repository.show_property_bookings(3)
     assert result == [
-        Booking(3, '2024-07-01', '2024-07-10', True, 4)
+        Booking(3, '2024-07-01', '2024-07-10', True, 4),
+        Booking(3, '2024-06-01', '2024-06-10', True, 4),
+        Booking(3, '2024-05-01', '2024-05-10', False, 4)
     ]
