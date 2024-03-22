@@ -78,7 +78,8 @@ def show_property_by_id(id):
 def list_bookings():
     connection=get_flask_database_connection(app)
     repository = BookingRepository(connection)
-    return render_template('bookings.html')
+    bookings = repository.show_user_bookings(session["user_id"])
+    return render_template('bookings.html', bookings=bookings)
 
 
 @app.route('/add_property', methods = ['POST'])
