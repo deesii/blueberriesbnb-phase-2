@@ -91,7 +91,7 @@ def add_properties():
                     price_per_night_from_form
                     )
     repository.add(property)
-    return redirect("/") 
+    return redirect("/") , 302
 
 @app.route('/add_property', methods=['GET'])
 def get_add_property_page():

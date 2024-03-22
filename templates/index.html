@@ -9,15 +9,17 @@
 
     {% if properties %}
         <h2>Property Listings</h2>
-        <ul>
-            {% for property in properties %}
-                <li>
-                    <a id="property_link" href="/properties/{{property._id}}">
-                        {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+        <div id = "property-listings">
+            <ul>
+                {% for property in properties %}
+                    <li>
+                        <a id="property_link" href="/properties/{{property._id}}">
+                            {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+         </div>
         <!-- <ul>
             {% for property in properties %}
                 <li>{{ property.name}} - User {{ property.location }} - Price per night {{ property.price}}</li>
