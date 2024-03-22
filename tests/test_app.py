@@ -49,15 +49,39 @@ def test_render_register(page, test_web_address):
 
 
 '''
-We can render the add property page
+We can render the add property page, and has the input fields with labels
 
 '''
 
 def test_render_property(page, test_web_address):
     page.goto(f"http://{test_web_address}/add_property")
-    
+    heading_tag = page.locator("h1")
+    title_tag = page.locator("title")
+    expect(heading_tag).to_have_text("Add New Property")
+    title_text = title_tag.inner_text()
+    print(f"title text is : {title_text}")
+    #expect(title_tag).to_have_text("BlueberryBnB: Add New Property") --> unsure why this doesnt behave accordingly
+    assert title_text == "BlueberryBnB: Add New Property"
+    labels = page.locator("label")
+    text_inputs = page.locator("input[type='text']")
+    submit_inputs = page.locator("input[type='submit']")
+    textarea = page.locator("textarea")
+    expect(labels).to_have_count(3)
+    expect(text_inputs).to_have_count(2)
+    expect(submit_inputs).to_have_count(1)
+    expect(textarea).to_have_count(1)
+    expect(submit_inputs).to_have_attribute("value","Add Property")
 
+    input_items = page.locator("input[type='text']").all()
+    print(input_items)
 
+    id_names = ["property_name", "price_per_night"]
+
+    for index, id_name in enumerate(id_names):
+        input_element = input_items[index] 
+        expect(input_element).to_have_attribute("id",id_name)
+
+        print(f"the input element is {input_element} and the id should be {id_names[index]}")
 
 
 
@@ -150,25 +174,44 @@ When I call get/properties I see a list of the properties from the database
     #     "Property(5, Property5, 5, cloud, 83.20)"
 
 '''
-When I post a new property via POST/index I see a list of the properties with the additional property from the database
+When I post a new property via POST/add_property it redirects to the index page
 
 '''
 def test_post_property(db_connection, web_client):
     db_connection.seed("seeds/blueberries_bnb.sql") 
-    post_response = web_client.post('/add_property', data = {'property_name': "Property6", 'user_id': "3", 'description' : "wet", 'price_per_night' : "23.40"})
-    get_response = web_client.get('/') 
-    assert post_response.status_code == 200
-    assert post_response.data.decode("utf-8") == ""
-    assert get_response.status_code == 200
-    # assert get_response.data.decode("utf-8") == "" \
-    # "Property(1, Property1, 1, hot, 25.40)\n"\
-    # "Property(2, Property2, 2, cold, 45.70)\n"\
-    # "Property(3, Property3, 3, windy, 83.00)\n"\
-    # "Property(4, Property4, 4, snow, 56.80)\n"\
-    # "Property(5, Property5, 4, cloud, 83.20)\n"\
-    # "Property(6, Property6, 3, wet, 23.40)"
 
+    with web_client.session_transaction() as session:
+        session['user_id'] = '3'
+    post_response = web_client.post('/add_property', data = {'property_name': "Property6", 'description' : "wet", 'price_per_night' : "23.40"})
+    redirect_response = web_client.get('/') 
+    assert post_response.status_code == 302
+    assert redirect_response.status_code == 200
 
+'''
+When I post a new property via POST/add_property it redirects to the index page and I see the list of properties with the added property
+
+'''
+def test_post_property_get_index_page(db_connection, web_client, page, test_web_address):
+    db_connection.seed("seeds/blueberries_bnb.sql") 
+    with web_client.session_transaction() as session:
+        session['user_id'] = '3'
+    post_response = web_client.post('/add_property', data = {'property_name': "Property6", 'description' : "wet", 'price_per_night' : "23.40"})
+    redirect_response = web_client.get('/') 
+    assert post_response.status_code == 302
+    assert redirect_response.status_code == 200
+    page.goto(f"http://{test_web_address}/")
+    h2_tag = page.locator("h2")
+    expect(h2_tag).to_have_text("Property Listings")
+    list_items = page.locator("#property-listings ul > li")
+    expect(list_items).to_contain_text([
+        "Property1 - Description: hot - Price per night 25.4",
+        "Property2 - Description: cold - Price per night 45.7",
+        "Property3 - Description: windy - Price per night 83.0",
+        "Property4 - Description: snow - Price per night 56.8",
+        "Property5 - Description: cloud - Price per night 83.2",
+        "Property6 - Description: wet - Price per night 23.4"
+    ])
+    
 
 '''
 When one of the inputs are not included, when I post a new property via POST/add_property I will see an error message, when trying to add to database
@@ -177,7 +220,9 @@ When one of the inputs are not included, when I post a new property via POST/add
 
 def test_post_property_incomplete(db_connection, web_client):
     db_connection.seed("seeds/blueberries_bnb.sql") 
-    response = web_client.post('/add_property', data = {'user_id': "3", 'description' : "wet", 'price_per_night' : "23.40"})
+    with web_client.session_transaction() as session:
+        session['user_id'] = '3'
+    response = web_client.post('/add_property', data = {'description' : "wet", 'price_per_night' : "23.40"})
     assert response.status_code == 400
     assert response.data.decode('utf-8') == 'One of the inputs is not filled in!'
 
