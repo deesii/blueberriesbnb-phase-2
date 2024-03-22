@@ -74,22 +74,33 @@ def show_property_by_id(id):
 
 @app.route('/add_property', methods = ['POST'])
 def add_properties():
-    if 'property_name' not in request.form or 'description' not in request.form or 'user_id' not in request.form or 'price_per_night' not in request.form:
+    if not request.form.get('property_name') or not request.form.get('description') or not request.form.get('price_per_night'): #'user_id' not in request.form
         return 'One of the inputs is not filled in!', 400
     
+    property_name_from_form = request.form.get('property_name')
+    description_from_form = request.form.get('description')
+    price_per_night_from_form = request.form.get('price_per_night')
+    user = session["user_id"]
+
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = Property(None,
-                    request.form['property_name'],
-                    request.form['user_id'],
-                    request.form['description'],
-                    request.form['price_per_night']
+                    property_name_from_form,
+                    user,
+                    description_from_form,
+                    price_per_night_from_form
                     )
     repository.add(property)
-    return "" , 200 
+    return redirect("/") 
 
 @app.route('/add_property', methods=['GET'])
 def get_add_property_page():
+
+    # if "user_id" not in session:
+    #     return render_template("login.html")
+
+    # user = session["user_id"]
+    # print(f"the user id is {user}")
     return render_template('adding_property.html')
 
 
