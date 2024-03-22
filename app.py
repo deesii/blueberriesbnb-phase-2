@@ -7,6 +7,7 @@ from lib.property import Property
 from lib.user_repository import UserRepository
 from lib.user import User
 from lib.booking_repository import BookingRepository
+from lib.booking_repository import BookingRepository
 
 # Create a new Flask app
 app = Flask(__name__)
