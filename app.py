@@ -62,6 +62,7 @@ def get_properties():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    print(properties)
     return render_template('index.html', properties=properties), 200
   
 
@@ -71,6 +72,17 @@ def show_property_by_id(id):
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
     return render_template('get_property.html', property=property)
+
+#show list of properties by user
+
+@app.route('/my_properties' , methods=['GET'])
+def show_property_by_user_id():
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    user = session["user_id"]
+    my_properties = repository.find_property_by_user_id(user)
+    #print(my_properties)
+    return render_template('my_properties.html', my_properties = my_properties)
 
 @app.route('/add_property', methods = ['POST'])
 def add_properties():

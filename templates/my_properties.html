@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}My properties{% endblock %}
+
+{% block main %}
+
+<h1>My properties</h1> 
+
+    {% if my_properties %}
+    <div id = "my-property-listings">
+        <ul>
+            {% for property in my_properties %}
+                <li>
+                    <a id="property_link" href="/">
+                        {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% else %}
+    <h2>You do not currently have any properties.</h2>
+    
+    {% endif %}
+
+</form>
+    
+{% endblock %}
