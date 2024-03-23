@@ -6,6 +6,7 @@ from lib.property_repository import PropertyRepository
 from lib.property import Property
 from lib.user_repository import UserRepository
 from lib.user import User
+from lib.booking_repository import BookingRepository
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -36,6 +37,8 @@ Session(app)
 #     return decorated_function
 
 
+
+
 @app.route('/register', methods = ['POST', 'GET'])
 def get_registration_page():
     if request.method == 'POST':
@@ -52,8 +55,7 @@ def get_registration_page():
             return render_template('successful_registration.html', email=email_from_form)
             # else:
             # #     return "Email has already been registered!"
-       
-
+    
     else:
         return render_template('register.html')
 
@@ -72,6 +74,14 @@ def show_property_by_id(id):
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
     return render_template('get_property.html', property=property)
+
+@app.route('/bookings', methods=['GET'])
+def list_bookings():
+    connection=get_flask_database_connection(app)
+    repository = BookingRepository(connection)
+    bookings = repository.show_user_bookings(session["user_id"])
+    return render_template('bookings.html', bookings=bookings)
+
 
 #show list of properties by user
 

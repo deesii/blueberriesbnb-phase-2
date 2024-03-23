@@ -115,6 +115,39 @@ def test_get__individual_property(page, test_web_address, db_connection):
     expect(labels).to_have_count(2)
     expect(button).to_have_count(1)
 
+"""
+Bookings are listed for current user
+"""
+def test_bookings_list(page, test_web_address, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    page.goto(f"http://{test_web_address}/bookings")
+    h1 = page.locator("h1")
+    h2 = page.locator("h2")
+    divs = page.locator("div")
+    
+    expect(h1).to_have_text("Bookings")
+    # expect(h2).to_have_text(["Pending", "Approved"])
+    # expect(divs).to_have_text([
+    #     "Property Name: Property1\nBooked from 2024-03-27 till 2024-03-29",
+    #     "Property Name: Property3\nBooked from 2024-07-01 till 2024-07-10"
+    # ])
+
+"""
+Booking is added when it is submitted via booking form
+"""
+def test_add_booking(page, test_web_address, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    page.goto(f"http://{test_web_address}/properties/1")
+    page.screenshot(path="screenshot.png", full_page=True)
+    page.fill("input[name=date_from]", "2024-03-13")
+    page.screenshot(path="screenshot.png", full_page=True)
+    page.fill("input[name=date_to]", "2024-03-15")
+    page.screenshot(path="screenshot.png", full_page=True)
+    page.click("text=Create Booking")
+
+
+
+
 
 '''
 When I call get/properties I see a list of the properties from the database
