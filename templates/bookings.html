@@ -1,35 +1,39 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>MakersBnB: Bookings</title>
+{% extends "layout.html" %}
 
-        <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        <h1> Bookings </h1>
-        <!-- <h2></h2>
-        <p> 
-            Description: <br>
-            Price per night: £
-        </p>
+{% block title %}Bookings{% endblock %}
 
-        <form action="/bookings" method="post">
-            <label for="date_from">Date From: </label>
-            <input type="date" name="date_from" value="date_from">
-            <br>
-            <label for="date_to">Date To:</label>
-            <input type="date" name="date_from" value="date_from">
-            <br><br>
-            <input type="submit" value="Create Booking">
-            
-        </form> -->
-        {% for booking in bookings %} 
-        <p>{{booking.id}}</p>
-        {% endfor %}
+{% block main %}
+
+<h1>Bookings</h1> 
     
-    </body>
-</html>
+    <h2>Your property bookings</h2>
+    {% if my_properties %}
+        {% for property in my_properties %}
+            <p>Property Name: {{ property._property_name }}, description: {{ property._description }}, price per night: {{ property._price_per_night }}</p>
+            
+            {% set property_id = property._id %}
+            {% set bookings_for_property = booking_my_properties[property_id] %}
+            {% if bookings_for_property %}
+                <ul>
+                    {% for booking in bookings_for_property %}
+                        <li>Booking from: {{ booking.dates_booked_from }} to {{ booking.dates_booked_to }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h4>There are currently no bookings for this property.</h4>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h3>You have no properties to be booked.</h3>
+    {% endif %}
+
+    <h2>Your bookings</h2>
+    {% if booked_properties %}
+        {% for booking in booked_properties %}
+                <p>Property Name: {{booking.property_name}} , description: {{booking.description }}, Booked from : {{booking.dates_booked_from}} to {{booking.dates_booked_to}} , price per night: £{{booking.price_per_night}}</p>
+        {% endfor %}
+    {% else %}
+        <h3>There are currently no bookings.</h3>
+    {% endif %}
+        
+{% endblock %}
