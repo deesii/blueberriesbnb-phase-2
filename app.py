@@ -64,6 +64,7 @@ def get_properties():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
+    print(properties)
     return render_template('index.html', properties=properties), 200
   
 
@@ -81,6 +82,21 @@ def list_bookings():
     bookings = repository.show_user_bookings(session["user_id"])
     return render_template('bookings.html', bookings=bookings)
 
+
+#show list of properties by user
+
+@app.route('/my_properties' , methods=['GET'])
+def show_property_by_user_id():
+    connection = get_flask_database_connection(app)
+    repository = PropertyRepository(connection)
+    try:
+        user = session["user_id"]
+        my_properties = repository.find_property_by_user_id(user)
+    #print(my_properties)
+        return render_template('my_properties.html', my_properties = my_properties), 200
+    except KeyError:
+        return redirect('/login'), 302
+    
 
 @app.route('/add_property', methods = ['POST'])
 def add_properties():
