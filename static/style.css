@@ -7,12 +7,14 @@ body {
 
 }
 
+/* styling for the property header on the bookings page */
 #property-header{
     background-color: white;
     color:black;
     margin-top: 20px;
-    outline-style: dashed;
-    outline-color: pink;
+    outline-style: none;
+    padding: 10px;
+    
     
 }
 
@@ -25,6 +27,7 @@ body {
     
 }
 
+/* styling for the top level cards for the my properties (placeholder)
 .my-property-booking-card {
     
     width: 80%;
@@ -38,7 +41,9 @@ body {
     border-radius: 12px;
     overflow: auto;
 
-}
+} 
+
+/* styling for the booking card for my properties (placeholder) */
 
 /* .my-booking-card {
     
@@ -54,7 +59,7 @@ body {
     overflow: auto;
  } */
 
-
+/* styling for the individual bookings */
 .booking-card {
     
     width: 80%;
