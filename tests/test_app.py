@@ -1,8 +1,6 @@
 from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 
-# Tests for your routes go here
-
 """
 We can render the index page
 """
@@ -172,6 +170,59 @@ When I call get/properties I see a list of the properties from the database
     #     "Property(3, Property3, 3, windy, 83)\n"\
     #     "Property(4, Property4, 4, snow, 56.80)\n"\
     #     "Property(5, Property5, 5, cloud, 83.20)"
+
+
+'''
+
+When I GET/my_properties I am redirected to the login.html page if  I am not logged in
+
+'''
+def test_not_logged_in_get_my_properties_redirect(db_connection, web_client, page, test_web_address):
+    db_connection.seed("seeds/blueberries_bnb.sql") 
+    response = web_client.get("/my_properties")
+    assert response.status_code == 302
+    
+    page.goto(f"http://{test_web_address}/my_properties")
+    
+    h1_tag = page.locator("h1")
+    title_tag = page.locator("title")
+    title_text = title_tag.inner_text()
+    print("Actual title text:", title_text)
+    expect(h1_tag).to_have_text("Login")
+    assert title_text == "BlueberryBnB: Login"
+
+
+
+# '''
+# When I GET/my_properties I see a list of my properties if  I am logged in
+
+# '''
+
+# #flask app not handling session data, and appears to not recognise the session data!, or it is an issue with playwright handling?
+
+# def test_get_my_properties(db_connection, web_client, page, test_web_address):
+#     db_connection.seed("seeds/blueberries_bnb.sql") 
+
+#     with web_client.session_transaction() as session:
+#         session['user_id'] = '3'
+    
+#     print(f"before going to the page : {session['user_id']}")
+    
+#     page.goto(f"http://{test_web_address}/my_properties")
+    
+#     print(f"after going to the page: {session['user_id']}")
+#     h1_tag = page.locator("h1")
+#     print(f"h1 tag text is {h1_tag.inner_text()}")
+#     title_tag = page.locator("title")
+#     title_text = title_tag.inner_text()
+#     print("Actual title text:", title_text)
+#     expect(h1_tag).to_have_text("My properties")
+#     assert title_text == "BlueberryBnB: My properties"
+#     list_items = page.locator("#my-property-listings ul > li")
+#     expect(list_items).to_contain_text([
+#         "Property3 - Description: windy - Price per night 83.0",
+#     ])
+
 
 '''
 When I post a new property via POST/add_property it redirects to the index page
