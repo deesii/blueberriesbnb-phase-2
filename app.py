@@ -7,6 +7,7 @@ from lib.property import Property
 from lib.user_repository import UserRepository
 from lib.user import User
 from lib.booking_repository import BookingRepository
+from functools import wraps
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -23,18 +24,18 @@ Session(app)
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
-# def login_required(f):
-#     """
-#     Decorate routes to require login.
+def login_required(f):
+    """
+    Decorate routes to require login.
 
-#     https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-#     """
-#     @wraps(f)
-#     def decorated_function(*args, **kwargs):
-#         if session.get("user_id") is None:
-#             return redirect("/login")
-#         return f(*args, **kwargs)
-#     return decorated_function
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 
@@ -59,6 +60,7 @@ def get_registration_page():
     else:
         return render_template('register.html')
 
+
 @app.route('/', methods=['GET'])
 def get_properties():
     connection = get_flask_database_connection(app)
@@ -66,7 +68,6 @@ def get_properties():
     properties = repository.all()
     print(properties)
     return render_template('index.html', properties=properties), 200
-  
 
 @app.route('/properties/<int:id>', methods=['GET'])
 def show_property_by_id(id):
@@ -76,8 +77,9 @@ def show_property_by_id(id):
     return render_template('get_property.html', property=property)
 
 @app.route('/bookings', methods=['GET'])
+@login_required
 def list_bookings():
-    connection=get_flask_database_connection(app)
+    connection = get_flask_database_connection(app)
     repository = BookingRepository(connection)
     bookings = repository.show_user_bookings(session["user_id"])
     return render_template('bookings.html', bookings=bookings)
@@ -86,6 +88,7 @@ def list_bookings():
 #show list of properties by user
 
 @app.route('/my_properties' , methods=['GET'])
+@login_required
 def show_property_by_user_id():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
@@ -99,6 +102,7 @@ def show_property_by_user_id():
     
 
 @app.route('/add_property', methods = ['POST'])
+@login_required
 def add_properties():
     if not request.form.get('property_name') or not request.form.get('description') or not request.form.get('price_per_night'): #'user_id' not in request.form
         return 'One of the inputs is not filled in!', 400
@@ -120,6 +124,7 @@ def add_properties():
     return redirect("/") , 302
 
 @app.route('/add_property', methods=['GET'])
+@login_required
 def get_add_property_page():
 
     # if "user_id" not in session:
