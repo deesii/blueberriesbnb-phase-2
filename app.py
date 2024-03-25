@@ -7,6 +7,7 @@ from lib.property import Property
 from lib.user_repository import UserRepository
 from lib.user import User
 from lib.booking_repository import BookingRepository
+from lib.booking import Booking
 from functools import wraps
 
 # Create a new Flask app
@@ -24,6 +25,7 @@ Session(app)
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -42,6 +44,9 @@ def login_required(f):
 
 @app.route('/register', methods = ['POST', 'GET'])
 def get_registration_page():
+    """
+    Form for user registration
+    """
     if request.method == 'POST':
         email_from_form = request.form.get('email')
         if email_from_form:
@@ -63,6 +68,9 @@ def get_registration_page():
 
 @app.route('/', methods=['GET'])
 def get_properties():
+    """
+    Index page to show list of properties available
+    """
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
@@ -71,15 +79,38 @@ def get_properties():
 
 @app.route('/properties/<int:id>', methods=['GET'])
 def show_property_by_id(id):
+    """
+    Page to show details of individual properties
+    Also serves as a booking form for each property
+    """
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
     return render_template('get_property.html', property=property)
 
 @app.route('/properties/<int:id>', methods=['POST'])
-def create_booking(id):
-        if not request.form.get('property_name') or not request.form.get('description') or not request.form.get('price_per_night'): #'user_id' not in request.form
+def create_booking(property_id):
+    """
+    If all details are valid, a property should be booked by filling in the booking form
+    """
+    if not request.form.get('date_from') or not request.form.get('date_to'):
         return 'One of the inputs is not filled in!', 400
+    
+    date_from = request.form.get('date_from')
+    date_to = request.form.get('date_to')
+    booker_id = session.get("user_id")
+
+    connection = get_flask_database_connection(app)
+    repository = BookingRepository(connection)
+    booking = Booking(
+        property_id,
+        date_from,
+        date_to,
+        False,
+        booker_id
+    )
+    repository.create_booking(booking)
+    return redirect("/") , 302
     
 
 @app.route('/bookings', methods=['GET'])
