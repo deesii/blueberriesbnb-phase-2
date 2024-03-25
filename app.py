@@ -75,6 +75,12 @@ def show_property_by_id(id):
     property = repository.find_property_by_id(id)
     return render_template('get_property.html', property=property)
 
+@app.route('/properties/<int:id>', methods=['POST'])
+def create_booking(id):
+        if not request.form.get('property_name') or not request.form.get('description') or not request.form.get('price_per_night'): #'user_id' not in request.form
+        return 'One of the inputs is not filled in!', 400
+    
+
 @app.route('/bookings', methods=['GET'])
 def list_bookings():
     connection=get_flask_database_connection(app)
