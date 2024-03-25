@@ -8,9 +8,9 @@
 
     {% if my_properties %}
     <div id = "my-property-listings">
-        <ul>
+        <ul class = "class-list">
             {% for property in my_properties %}
-                <li>
+                <li class = "card">
                     <a id="property_link" href="/">
                         {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
                     </a>

@@ -10,16 +10,16 @@
     {% if properties %}
         <h2>Property Listings</h2>
         <div id = "property-listings">
-            <ul>
+            <ul class = "class-list">
                 {% for property in properties %}
-                    <li>
+                    <li class = "card">
                         <a id="property_link" href="/properties/{{property._id}}">
                             {{ property._property_name }} - Description: {{ property._description }} - Price per night {{ property._price_per_night}}
                         </a>
                     </li>
                 {% endfor %}
             </ul>
-         </div>
+        </div>
         <!-- <ul>
             {% for property in properties %}
                 <li>{{ property.name}} - User {{ property.location }} - Price per night {{ property.price}}</li>
