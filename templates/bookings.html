@@ -8,32 +8,53 @@
     
     <h2>Your property bookings</h2>
     {% if my_properties %}
+
         {% for property in my_properties %}
-            <p>Property Name: {{ property._property_name }}, description: {{ property._description }}, price per night: {{ property._price_per_night }}</p>
-            
+            <div id = "property-header">
+            Property Name: {{ property._property_name }}, price per night: £{{ property._price_per_night }}</button>
+            </div>
+            <button type="button" class="collapsible">open bookings</button>
+                
+                <!-- description: {{ property._description }} -->
+                
             {% set property_id = property._id %}
             {% set bookings_for_property = booking_my_properties[property_id] %}
             {% if bookings_for_property %}
-                <ul>
+            
+                <div class = "content">
+                    <ul class = "card-list">
                     {% for booking in bookings_for_property %}
-                        <li>Booking from: {{ booking.dates_booked_from }} to {{ booking.dates_booked_to }}</li>
+                    <li class = "booking-card">Booking from: {{ booking.dates_booked_from }} to {{ booking.dates_booked_to }}</li>
                     {% endfor %}
-                </ul>
+                    </ul>    
+                </div>
             {% else %}
-                <h4>There are currently no bookings for this property.</h4>
+                <div class = "content">
+                    <p>There are currently no bookings for this property.</p>
+                    </div>
             {% endif %}
+            
         {% endfor %}
+
     {% else %}
         <h3>You have no properties to be booked.</h3>
     {% endif %}
 
+    <p></p>
     <h2>Your bookings</h2>
-    {% if booked_properties %}
-        {% for booking in booked_properties %}
-                <p>Property Name: {{booking.property_name}} , description: {{booking.description }}, Booked from : {{booking.dates_booked_from}} to {{booking.dates_booked_to}} , price per night: £{{booking.price_per_night}}</p>
-        {% endfor %}
-    {% else %}
-        <h3>There are currently no bookings.</h3>
-    {% endif %}
+    
+        {% if booked_properties %}
+            <button type="button" class="collapsible">open bookings</button>
+                <div class = "content">
+                    <ul class="card-list">  
+                        {% for booking in booked_properties %}
+                            <li class="booking-card">Property Name: {{booking.property_name}} , Booked from : {{booking.dates_booked_from}} to {{booking.dates_booked_to}} , price per night: £{{booking.price_per_night}}</li>
+                            <!-- description: {{booking.description }} -->
+                        {% endfor %}
+                    </ul> 
+                </div>
+        {% else %}
+            <h4>There are currently no bookings.</h4>
+        {% endif %}
         
 {% endblock %}
