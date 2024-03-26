@@ -10,7 +10,7 @@
     {% if properties %}
         <h2>Property Listings</h2>
         <div id = "property-listings">
-            <ul class = "class-list">
+            <ul class = "card-list">
                 {% for property in properties %}
                     <li class = "card">
                         <a id="property_link" href="/properties/{{property._id}}">
