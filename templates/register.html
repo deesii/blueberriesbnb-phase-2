@@ -7,13 +7,14 @@
 
 {% block main %}
 
-<h1>Register</h1> 
+<h1>Register</h1>
+<div id class = "register-card">
 
-<form action = "/register" method = "POST">
-    <label for="email">Email</label><br>
-    <input type = "email" name = "email" placeholder = "email address"/><br><br>
-    <input type = "submit" id = "register" value = "Register" />
+    <form action = "/register" method = "POST">
+        <label for="email">Email</label>
+        <input type = "email" name = "email" placeholder = "email address"/><br><br>
+        <input type = "submit" id = "register" value = "Register" />
 
-</form>
-    
+    </form>
+</div> 
 {% endblock %}
