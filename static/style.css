@@ -4,17 +4,58 @@ body {
     background-size: cover;
     color: white;
     font-family: 'Courier New', monospace;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+
+}
+
+/* Styling for the card list */
+
+.card-list {
+    list-style-type: none;
+    padding: 0;
+    
+    
+}
+
+.card {
+    
+    width: 80%;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    height:180px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+}
+
+.book-property-card {
+    color:rgb(242, 144, 161);
+    width: 40%;
+    min-width:fit-content;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    height:280px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
 
 }
 
 .container {
     width: 50%;
     max-width: 80%;
+    min-width:fit-content;
     padding: 2rem;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
     /*background-color: rgba(255, 255, 255, 0.5);*/
     background-color: white;
-    
+    margin-top:20px;
+    margin-bottom:20px;
     border-radius: 12px;
 }
 
@@ -80,14 +121,14 @@ ul {
 }
 
 #property_link{
-    color:pink
+    color:black;
 }
 
 #property_link:hover {
-    color: white;
+    color: pink;
 }
 
-input#submit_add_property {
+input[type=submit] {
     background-color: #f2f7f5; 
     color: black;
     border: none; 
@@ -98,7 +139,7 @@ input#submit_add_property {
 
 
 }
-input#submit_add_property:hover {
+input[type=submit]:hover {
     background-color: rgb(255, 231, 145);
     color: rgb(148, 136, 136);
 }
@@ -111,4 +152,21 @@ input#submit_add_property:hover {
 
 input[type=text]:focus{
     outline: #555 solid 3px;
+}
+
+
+input[type=date] {
+    height: 35px;
+    margin: 0 auto;
+    width: 100%;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border:pink;
+    border-style: dotted;
+    border-radius: 12px;
+    padding: 0 3px;
+    color: hsl(0, 6%, 28%);
+
 }

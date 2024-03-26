@@ -6,10 +6,12 @@
 
 {% block main %}
 
-    <h1> {{property._property_name}} </h1>
+    <h1>Booking</h1>
+    <p></p><h2>{{property._property_name}}</h2>
     
     <p> 
         Description: {{property._description}}<br>
+    <div class = "book-property-card">
         Price per night: £{{property._price_per_night}}
     </p>
 
@@ -23,4 +25,5 @@
             <input type="submit" value="Create Booking">
             
         </form>
+    </div>
 {% endblock %}
