@@ -46,6 +46,37 @@ body {
 
 }
 
+.register-card {
+    color:rgb(242, 144, 161);
+    width: 40%;
+    min-width:fit-content;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    height:170px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+
+}
+
+
+.log-in-card {
+    color:rgb(242, 144, 161);
+    width: 40%;
+    min-width:fit-content;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    height:260px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+
+}
+
 .container {
     width: 50%;
     max-width: 80%;
@@ -95,22 +126,28 @@ textarea:focus{
 }
 
 
-/* input[type = "text"]{
-    width: 100%;
-    border: 2px solid pink;
-    border-radius: 4px;
-} */
-
-input#property_name{
+input[type = text]{
     width: 100%;
     border: 2px solid pink;
     border-radius: 4px;
 }
 
+/* input#property_name{
+    width: 100%;
+    border: 2px solid pink;
+    border-radius: 4px;
+} */
 
 
 
-input#price_per_night{
+
+input[type=email]{
+    width: 100%;
+    border: 2px solid pink;
+    border-radius: 4px;
+}
+
+input[type=password]{
     width: 100%;
     border: 2px solid pink;
     border-radius: 4px;
