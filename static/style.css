@@ -2,7 +2,7 @@ body {
     font-size: 18px;
     background-image:url('https://png.pngtree.com/thumb_back/fh260/background/20190223/ourmid/pngtree-starry-background-dot-starlight-and-galaxy-background-material-backgroundgalaxystarblackspaceuniverse-image_86868.jpg');
     background-size: cover;
-    color: white;
+    color: rgb(255, 255, 255);
     font-family: 'Courier New', monospace;
     overflow-y: auto;
     scrollbar-gutter: stable;
@@ -75,6 +75,115 @@ body {
     border-radius: 12px;
     overflow: auto;
 
+}
+
+/* styling for the property header on the bookings page */
+#property-header{
+    background-color: white;
+    color:black;
+    margin-top: 20px;
+    outline-style: none;
+    padding: 10px;
+    
+    
+}
+
+/* Styling for the card list */
+
+.card-list {
+    list-style-type: none;
+    padding: 0;
+    
+    
+}
+
+/* styling for the top level cards for the my properties (placeholder)
+.my-property-booking-card {
+    
+    width: 80%;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    color: black;
+    height:300px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+
+} 
+
+/* styling for the booking card for my properties (placeholder) */
+
+/* .my-booking-card {
+    
+    width: 100%;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    color: black;
+    height:100px;
+    padding: 1rem;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+ } */
+
+/* styling for the individual bookings */
+.booking-card {
+    
+    width: 80%;
+    transition: 0.3s;
+    color: black;
+    height:80px;
+    padding: 1rem;
+    border:pink;
+    border-style: dotted;
+    background-color: white;
+    margin:20px auto;
+    border-radius: 12px;
+    overflow: auto;
+    
+    
+}
+
+  /* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: #f2f7f5; 
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    height: 70px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.collapsible:active, .collapsible:hover {
+background-color: rgb(255, 231, 145);
+}
+
+.content {
+padding: 0 18px;
+display: none;
+overflow: hidden;
+background-color: white;
+color:black;
+}
+
+
+.collapsible:after {
+    content: '\002B';
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.collapsible.active:after {
+    content: "\2212";
 }
 
 .container {

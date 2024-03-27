@@ -79,9 +79,44 @@ def show_property_by_id(id):
 def list_bookings():
     connection=get_flask_database_connection(app)
     repository = BookingRepository(connection)
-    bookings = repository.show_user_bookings(session["user_id"])
-    return render_template('bookings.html', bookings=bookings)
-
+    properties_repository = PropertyRepository(connection)
+    try:
+        user = session["user_id"]
+        bookings = repository.show_user_bookings(user)
+        print(bookings)
+        
+        my_properties = properties_repository.find_property_by_user_id(user)
+        print(f"these are my properties : {my_properties}")
+        booking_my_properties = {}
+        
+        #for each property give a list of the bookings, with the key as the property id and value a list of bookings
+        for property in my_properties:
+            property_id = property._id
+            booking_per_property = repository.show_property_bookings(property_id)
+            booking_my_properties[property_id] = booking_per_property
+        
+        print(booking_my_properties)
+        
+        properties = properties_repository.all()
+        booked_properties = []
+        
+        for booking in bookings:
+            # print(booking)
+            # print(booking.property_id)
+            booking_id_to_find = booking.property_id
+            for property in properties:
+                if property._id == booking_id_to_find:
+                    property_details = {
+                        'property_name': property._property_name,
+                        'description': property._description,
+                        'dates_booked_from': booking.dates_booked_from,
+                        'dates_booked_to': booking.dates_booked_to,
+                        'price_per_night': property._price_per_night
+                    }
+                    booked_properties.append(property_details) 
+        return render_template('bookings.html', booked_properties = booked_properties, my_properties = my_properties, booking_my_properties = booking_my_properties)
+    except KeyError:
+        return redirect ("/login") , 302
 
 #show list of properties by user
 
