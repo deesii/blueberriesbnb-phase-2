@@ -307,3 +307,6 @@ def test_logout_redirect(db_connection, web_client):
     
 #     with web_client.session_transaction() as session:
 #         assert 'user_id' not in session
+    
+def test_login_fixture(login):
+    return
