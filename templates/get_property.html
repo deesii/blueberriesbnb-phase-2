@@ -15,7 +15,7 @@
         Price per night: £{{property._price_per_night}}
     </p>
 
-        <form action="/bookings" method="post">
+        <form action="/properties/{{property._id}}" method="post">
             <label for="date_from">Date From: </label>
             <input type="date" name="date_from" value="date_from">
             <br>
