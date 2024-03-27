@@ -89,7 +89,7 @@ def show_property_by_id(id):
     return render_template('get_property.html', property=property)
 
 @app.route('/properties/<int:id>', methods=['POST'])
-def create_booking(property_id):
+def create_booking(id):
     """
     If all details are valid, a property should be booked by filling in the booking form
     """
@@ -103,14 +103,14 @@ def create_booking(property_id):
     connection = get_flask_database_connection(app)
     repository = BookingRepository(connection)
     booking = Booking(
-        property_id,
+        id,
         date_from,
         date_to,
         False,
         booker_id
     )
     repository.create_booking(booking)
-    return redirect("/") , 302
+    return redirect("/bookings") , 302
     
 
 @app.route('/bookings', methods=['GET'])
