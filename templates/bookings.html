@@ -24,7 +24,18 @@
                 <div class = "content">
                     <ul class = "card-list">
                     {% for booking in bookings_for_property %}
-                    <li class = "booking-card">Booking from: {{ booking.dates_booked_from }} to {{ booking.dates_booked_to }}</li>
+                    <div class = "booking-card">Booking id : {{booking.id}} . Booking from: {{ booking.dates_booked_from }} to {{ booking.dates_booked_to }}. Booked by user {{booking.booker_id}}</li>
+                        {% if booking.approved == False %}
+                            <form action = "/bookings/my_properties/{{booking.id}}" method = "post">
+                                <input type = "submit" name = "submit_approval" id = "submit_approval" value = "Approve">
+                                <!-- <input type = "submit" name = "submit_reject" id = "submit_reject" value = "Reject"> -->
+                            </form>
+                        {% else %}
+                        <div id = "approved">
+                            APPROVED
+                        </div>
+                        {% endif %}
+                    </div>
                     {% endfor %}
                     </ul>    
                 </div>
@@ -48,8 +59,17 @@
                 <div class = "content">
                     <ul class="card-list">  
                         {% for booking in booked_properties %}
-                            <li class="booking-card">Property Name: {{booking.property_name}} , Booked from : {{booking.dates_booked_from}} to {{booking.dates_booked_to}} , price per night: £{{booking.price_per_night}}</li>
+                            <li class="booking-card">Property Name: {{booking.property_name}} , Booked from : {{booking.dates_booked_from}} to {{booking.dates_booked_to}} , price per night: £{{booking.price_per_night}}
                             <!-- description: {{booking.description }} -->
+                            {% if booking.approved == False %}
+                                <div id = "awaiting-approval">
+                                    AWAITING APPROVAL
+                                </div>
+                            {% else %}
+                                <div id = "approved">
+                                CONFIRMED
+                            </div>
+                            {% endif %}
                         {% endfor %}
                     </ul> 
                 </div>
