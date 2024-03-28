@@ -103,6 +103,7 @@ def create_booking(id):
     connection = get_flask_database_connection(app)
     repository = BookingRepository(connection)
     booking = Booking(
+        None,
         id,
         date_from,
         date_to,
@@ -134,7 +135,8 @@ def list_bookings():
             booking_per_property = repository.show_property_bookings(property_id)
             booking_my_properties[property_id] = booking_per_property
         
-        print(booking_my_properties)
+        
+        print(f"this is the bookings for my properties: {booking_my_properties}")
         
         properties = properties_repository.all()
         booked_properties = []
@@ -152,10 +154,25 @@ def list_bookings():
                         'dates_booked_to': booking.dates_booked_to,
                         'price_per_night': property._price_per_night
                     }
-                    booked_properties.append(property_details) 
+                    booked_properties.append(property_details)
         return render_template('bookings.html', booked_properties = booked_properties, my_properties = my_properties, booking_my_properties = booking_my_properties)
     except KeyError:
         return redirect ("/login") , 302
+
+# route to approve one of my properties so that it goes from a default 
+"""
+I will be able to approve for each property on the booking page which has a link to all 
+"""
+
+@app.route('/bookings/my_properties/<int:id>', methods = ['POST'])
+@login_required
+def approval_my_property_bookings(id):
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_repository.change_booking_approval(id)
+    print(f"You have approved the booking id : {id}")
+    return redirect('/bookings')  , 302
+
 
 #show list of properties by user
 
