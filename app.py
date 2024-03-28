@@ -152,6 +152,7 @@ def list_bookings():
                         'description': property._description,
                         'dates_booked_from': booking.dates_booked_from,
                         'dates_booked_to': booking.dates_booked_to,
+                        'approved': booking.approved,
                         'price_per_night': property._price_per_night
                     }
                     booked_properties.append(property_details)
