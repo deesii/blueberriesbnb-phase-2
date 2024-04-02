@@ -7,6 +7,8 @@ from lib.property import Property
 from lib.user_repository import UserRepository
 from lib.user import User
 from lib.booking_repository import BookingRepository
+from lib.booking import Booking
+from functools import wraps
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -23,24 +25,28 @@ Session(app)
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
-# def login_required(f):
-#     """
-#     Decorate routes to require login.
 
-#     https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-#     """
-#     @wraps(f)
-#     def decorated_function(*args, **kwargs):
-#         if session.get("user_id") is None:
-#             return redirect("/login")
-#         return f(*args, **kwargs)
-#     return decorated_function
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 
 
 @app.route('/register', methods = ['POST', 'GET'])
 def get_registration_page():
+    """
+    Form for user registration
+    """
     if request.method == 'POST':
         email_from_form = request.form.get('email')
         if email_from_form:
@@ -59,25 +65,59 @@ def get_registration_page():
     else:
         return render_template('register.html')
 
+
 @app.route('/', methods=['GET'])
 def get_properties():
+    """
+    Index page to show list of properties available
+    """
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     properties = repository.all()
     print(properties)
     return render_template('index.html', properties=properties), 200
-  
 
 @app.route('/properties/<int:id>', methods=['GET'])
 def show_property_by_id(id):
+    """
+    Page to show details of individual properties
+    Also serves as a booking form for each property
+    """
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
     return render_template('get_property.html', property=property)
 
+@app.route('/properties/<int:id>', methods=['POST'])
+def create_booking(id):
+    """
+    If all details are valid, a property should be booked by filling in the booking form
+    """
+    if not request.form.get('date_from') or not request.form.get('date_to'):
+        return 'One of the inputs is not filled in!', 400
+    
+    date_from = request.form.get('date_from')
+    date_to = request.form.get('date_to')
+    booker_id = session.get("user_id")
+
+    connection = get_flask_database_connection(app)
+    repository = BookingRepository(connection)
+    booking = Booking(
+        None,
+        id,
+        date_from,
+        date_to,
+        False,
+        booker_id
+    )
+    repository.create_booking(booking)
+    return redirect("/bookings") , 302
+    
+
 @app.route('/bookings', methods=['GET'])
+@login_required
 def list_bookings():
-    connection=get_flask_database_connection(app)
+    connection = get_flask_database_connection(app)
     repository = BookingRepository(connection)
     properties_repository = PropertyRepository(connection)
     try:
@@ -95,7 +135,8 @@ def list_bookings():
             booking_per_property = repository.show_property_bookings(property_id)
             booking_my_properties[property_id] = booking_per_property
         
-        print(booking_my_properties)
+        
+        print(f"this is the bookings for my properties: {booking_my_properties}")
         
         properties = properties_repository.all()
         booked_properties = []
@@ -111,16 +152,33 @@ def list_bookings():
                         'description': property._description,
                         'dates_booked_from': booking.dates_booked_from,
                         'dates_booked_to': booking.dates_booked_to,
+                        'approved': booking.approved,
                         'price_per_night': property._price_per_night
                     }
-                    booked_properties.append(property_details) 
+                    booked_properties.append(property_details)
         return render_template('bookings.html', booked_properties = booked_properties, my_properties = my_properties, booking_my_properties = booking_my_properties)
     except KeyError:
         return redirect ("/login") , 302
 
+# route to approve one of my properties so that it goes from a default 
+"""
+I will be able to approve for each property on the booking page which has a link to all 
+"""
+
+@app.route('/bookings/my_properties/<int:id>', methods = ['POST'])
+@login_required
+def approval_my_property_bookings(id):
+    connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(connection)
+    booking_repository.change_booking_approval(id)
+    print(f"You have approved the booking id : {id}")
+    return redirect('/bookings')  , 302
+
+
 #show list of properties by user
 
 @app.route('/my_properties' , methods=['GET'])
+@login_required
 def show_property_by_user_id():
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
@@ -134,6 +192,7 @@ def show_property_by_user_id():
     
 
 @app.route('/add_property', methods = ['POST'])
+@login_required
 def add_properties():
     if not request.form.get('property_name') or not request.form.get('description') or not request.form.get('price_per_night'): #'user_id' not in request.form
         return 'One of the inputs is not filled in!', 400
@@ -155,6 +214,7 @@ def add_properties():
     return redirect("/") , 302
 
 @app.route('/add_property', methods=['GET'])
+@login_required
 def get_add_property_page():
 
     # if "user_id" not in session:
