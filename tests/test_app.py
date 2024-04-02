@@ -51,7 +51,7 @@ We can render the add property page, and has the input fields with labels
 
 '''
 
-def test_render_property(page, test_web_address):
+def test_render_property(page, test_web_address, login):
     page.goto(f"http://{test_web_address}/add_property")
     heading_tag = page.locator("h1")
     title_tag = page.locator("title")
@@ -92,11 +92,13 @@ def test_get__individual_property(page, test_web_address, db_connection):
     page.goto(f"http://{test_web_address}/properties/1")
 
     h1_tag = page.locator("h1")
+    h2_tag = page.locator("h2")
     inputs = page.locator("input")
     labels = page.locator("label")
     button = page.get_by_role("button")
 
-    expect(h1_tag).to_have_text("Property1")
+    expect(h1_tag).to_have_text("Booking")
+    expect(h2_tag).to_have_text("Property1")
     expect(inputs).to_have_count(3)
     expect(labels).to_have_count(2)
     expect(button).to_have_count(1)
@@ -104,11 +106,13 @@ def test_get__individual_property(page, test_web_address, db_connection):
     page.goto(f"http://{test_web_address}/properties/2")
     
     h1_tag = page.locator("h1")
+    h2_tag = page.locator("h2")
     inputs = page.locator("input")
     labels = page.locator("label")
     button = page.get_by_role("button")
     
-    expect(h1_tag).to_have_text("Property2")
+    expect(h1_tag).to_have_text("Booking")
+    expect(h2_tag).to_have_text("Property2")
     expect(inputs).to_have_count(3)
     expect(labels).to_have_count(2)
     expect(button).to_have_count(1)
