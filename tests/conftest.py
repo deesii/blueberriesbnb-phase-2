@@ -7,8 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from lib.user_repository import UserRepository
 
 EMAIL_PASSWORD_MAP = {
-    'blob@hotmail.com': 'testing0',
-    'email2@hotmail.com': 'testing1',
+    'blob@hotmail.com': 'testing0&',
+    'email2@hotmail.com': 'testing1!',
     'email3@email.com': '&1testing',
     'email4@email.com': '8^testing',
 }
@@ -81,7 +81,7 @@ def update_seed_file_with_hashes():
 
         for email, password in EMAIL_PASSWORD_MAP.items():
                 hashed_password = hash_password(password)
-                updated_seed_content = updated_seed_content.replace(f"INSERT INTO users (email) VALUES ('{email}');", f"INSERT INTO users (email, password) VALUES ('{email}', '{hashed_password}');")
+                updated_seed_content = updated_seed_content.replace(f"INSERT INTO users (email, password) VALUES ('{email}', NULL);", f"INSERT INTO users (email, password) VALUES ('{email}', '{hashed_password}');")
 
         with open(seed_file_path, 'w') as f:
             f.write(updated_seed_content)
