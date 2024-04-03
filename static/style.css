@@ -46,23 +46,8 @@ body {
 
 }
 
-.register-card {
-    color:rgb(242, 144, 161);
-    width: 40%;
-    min-width:fit-content;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-    transition: 0.3s;
-    height:170px;
-    padding: 1rem;
-    background-color: white;
-    margin:20px auto;
-    border-radius: 12px;
-    overflow: auto;
 
-}
-
-
-.log-in-card {
+.log-in_register-card {
     color:rgb(242, 144, 161);
     width: 40%;
     min-width:fit-content;
