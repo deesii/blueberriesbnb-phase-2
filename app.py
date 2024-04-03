@@ -232,7 +232,7 @@ def login_user():
 
         #ensure password and username filled in
         if not request.form.get("email") or not request.form.get("password"):
-            return "both email and password is required for logging in"
+            return "both email and password is required for logging in" , 400
 
         # Query database for username
         connection = get_flask_database_connection(app)
