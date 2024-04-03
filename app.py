@@ -9,6 +9,7 @@ from lib.user import User
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from functools import wraps
+from werkzeug.security import check_password_hash, generate_password_hash
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -49,19 +50,27 @@ def get_registration_page():
     """
     if request.method == 'POST':
         email_from_form = request.form.get('email')
-        if email_from_form:
+        password_from_form = request.form.get('password')
+        if not email_from_form or not password_from_form:
+            return 'You need all inputs to be filled in!', 400
+        else:
             connection = get_flask_database_connection(app)
             repository = UserRepository(connection)
-            if repository.check_email_exists(email_from_form) == False:
-                new_user = User(None, email_from_form) 
-                repository.create_new_user(new_user)
+            if repository.check_email_exists(email_from_form) == True:
+                return "Email has already been registered"
             else:
-                return "Email already exists"
-            
+                special_characters = '!@$%^&#~;:><=+-'
+                password_special_char = [char for char in special_characters if char in password_from_form]
+                password_valid = len(password_from_form) >= 8 and len(password_special_char) > 0
+                if password_valid:
+                        hash_password = generate_password_hash(password_from_form)
+                        new_user = User(None, email_from_form, hash_password) 
+                        repository.create_new_user(new_user)
+                else:
+                    return '''Password must contain at least 8 characters and include 
+                    one of the following characters !@$%^&#~;:><=+- '''
             return render_template('successful_registration.html', email=email_from_form)
-            # else:
-            # #     return "Email has already been registered!"
-    
+
     else:
         return render_template('register.html')
 
