@@ -230,25 +230,26 @@ def login_user():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure username was submitted
-        # if not request.form.get("email"):
-        #     return apology("must provide username", 403)
-
-        # # Ensure password was submitted
-        # elif not request.form.get("password"):
-        #     return apology("must provide password", 403)
+        #ensure password and username filled in
+        if not request.form.get("email") or not request.form.get("password"):
+            return "both email and password is required for logging in"
 
         # Query database for username
         connection = get_flask_database_connection(app)
         repo = UserRepository(connection)
         email = request.form.get("email")
+        password = request.form.get("password")
 
         # Ensure username exists and password is correct
         user = repo.find_user(email)
-        try:
-            session["user_id"] = user.id
-        except AttributeError:
-            return redirect("/register")
+        if check_password_hash(user.password, password):
+            try:
+                session["user_id"] = user.id
+            except AttributeError:
+                return redirect("/register")
+        
+        else:
+            return "Incorrect password"
         
         # Remember which user has logged in
         session["user_id"] = user.id
