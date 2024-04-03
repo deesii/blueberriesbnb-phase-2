@@ -3,7 +3,15 @@ from xprocess import ProcessStarter
 from lib.database_connection import DatabaseConnection
 from app import app
 from playwright.sync_api import sync_playwright
+from werkzeug.security import check_password_hash, generate_password_hash
+from lib.user_repository import UserRepository
 
+EMAIL_PASSWORD_MAP = {
+    'blob@hotmail.com': 'testing0',
+    'email2@hotmail.com': 'testing1',
+    'email3@email.com': '&1testing',
+    'email4@email.com': '8^testing',
+}
 
 # This is a Pytest fixture.
 # It creates an object that we can use in our tests.
@@ -57,3 +65,28 @@ def web_client():
 #         page = browser.new_page()
 #         yield page
 #         browser.close()
+        
+
+# hashing the password before putting into the tests for our seeds
+@pytest.fixture
+def update_seed_file_with_hashes():
+    def hash_password(password):
+        return generate_password_hash(password)
+    
+    def create_update_seed_file(seed_file_path):
+        with open(seed_file_path, 'r') as f:
+            seed_content = f.read()
+
+        updated_seed_content = seed_content
+
+        for email, password in EMAIL_PASSWORD_MAP.items():
+                hashed_password = hash_password(password)
+                updated_seed_content = updated_seed_content.replace(f"INSERT INTO users (email) VALUES ('{email}');", f"INSERT INTO users (email, password) VALUES ('{email}', '{hashed_password}');")
+
+        with open(seed_file_path, 'w') as f:
+            f.write(updated_seed_content)
+        
+
+    return create_update_seed_file
+
+

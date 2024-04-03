@@ -1,4 +1,5 @@
 from lib.user import User
+#from werkzeug.security import check_password_hash, generate_password_hash
 
 class UserRepository():
     
@@ -9,12 +10,12 @@ class UserRepository():
         rows = self._connection.execute("SELECT * FROM users")
         users = []
         for row in rows:
-            user = User(row["id"], row["email"])
+            user = User(row["id"], row["email"], row["password"])
             users.append(user)
         return users
     
     def create_new_user(self,user):
-        self._connection.execute('INSERT INTO users (email) VALUES (%s)',[user.email])
+        self._connection.execute('INSERT INTO users (email, password) VALUES (%s, %s)',[user.email ,user.password])
         return None
     
     def find_user(self, email):
@@ -23,14 +24,24 @@ class UserRepository():
 
         try:
             for row in rows:
-                return User(row['id'], row['email'])
+                return User(row['id'], row['email'], row['password'])
         except Exception as e:
             print(f"Error: {e}")
 
     
     def check_email_exists(self,email):
         user_email = email
-        if self.find_user(user_email) != None:
-            return True
-        else:
-            return False
+        return self.find_user(user_email) != None
+
+        
+    # def check_password_valid(self, password):
+    #     special_characters = '!@$%^&#~;:><=+-'
+    #     password_special_char = [char for char in special_characters if char in password]
+    #     return len(password) >= 8 and len(password_special_char) > 0
+    
+
+    # def hash_password(self, password):
+    #     return generate_password_hash(password)
+
+    # def check_password(self, stored_hash, password):
+    #     return check_password_hash(stored_hash, password)
