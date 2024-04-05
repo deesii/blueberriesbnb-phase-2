@@ -1,6 +1,7 @@
 
 class Booking():
-    def __init__(self, property_id, dates_booked_from, dates_booked_to,approved,booker_id):
+    def __init__(self, id, property_id, dates_booked_from, dates_booked_to,approved,booker_id):
+        self.id = id
         self.property_id = property_id
         self.dates_booked_from = dates_booked_from
         self.dates_booked_to = dates_booked_to
@@ -14,6 +15,6 @@ class Booking():
     
 
     def __repr__(self):
-        return f"Booking({self.property_id}, {self.dates_booked_from}, {self.dates_booked_to}, {self.approved}, {self.booker_id})"
+        return f"Booking({self.id}, {self.property_id}, {self.dates_booked_from}, {self.dates_booked_to}, {self.approved}, {self.booker_id})"
 
 

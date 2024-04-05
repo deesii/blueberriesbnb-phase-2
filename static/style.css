@@ -9,6 +9,14 @@ body {
 
 }
 
+#approved{
+    background-color: rgb(154, 212, 154)
+}
+
+#awaiting-approval{
+    background-color: rgb(255, 154, 154);
+}
+
 /* Styling for the card list */
 
 .card-list {
@@ -17,6 +25,7 @@ body {
     
     
 }
+
 
 .card {
     
@@ -120,7 +129,7 @@ body {
     width: 80%;
     transition: 0.3s;
     color: black;
-    height:80px;
+    height:140px;
     padding: 1rem;
     border:pink;
     border-style: dotted;

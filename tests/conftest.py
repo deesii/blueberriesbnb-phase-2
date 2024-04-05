@@ -2,7 +2,8 @@ import pytest, sys, random, py, pytest, os
 from xprocess import ProcessStarter
 from lib.database_connection import DatabaseConnection
 from app import app
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, Page, expect
+
 from werkzeug.security import check_password_hash, generate_password_hash
 from lib.user_repository import UserRepository
 
@@ -65,6 +66,16 @@ def web_client():
 #         page = browser.new_page()
 #         yield page
 #         browser.close()
+        
+@pytest.fixture
+def login(page, test_web_address):
+    page.goto(f"http://{test_web_address}/login")
+    page.fill("input[name=email]", "blob@hotmail.com")
+    page.screenshot(path="screenshot1.png", full_page=True)
+    page.click("#submit_login")
+    page.screenshot(path="screenshot.png", full_page=True)
+    return 
+
         
 
 # hashing the password before putting into the tests for our seeds
