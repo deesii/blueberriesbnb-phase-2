@@ -71,14 +71,13 @@ def web_client():
 def login(page, test_web_address):
     page.goto(f"http://{test_web_address}/login")
     page.fill("input[name=email]", "blob@hotmail.com")
+    page.fill("input[name=password]", "testing0&")
     page.screenshot(path="screenshot1.png", full_page=True)
     page.click("#submit_login")
     page.screenshot(path="screenshot.png", full_page=True)
-    return 
+    return
 
-        
-
-# hashing the password before putting into the tests for our seeds
+# hashing the password before putting into the tests for our seeds (initial set up only when there is no hash in database)
 @pytest.fixture
 def update_seed_file_with_hashes():
     def hash_password(password):

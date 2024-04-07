@@ -32,6 +32,87 @@ def test_get_index(page, test_web_address, db_connection):
 
 
 '''
+We will get an error code when no data is passed through on login
+'''
+
+def test_error_no_inputs_on_log_in( web_client, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    response = web_client.post('/login')
+    assert response.status_code == 400
+    assert response.data.decode("utf-8") == "both email and password is required for logging in"
+
+
+
+'''
+We will get an error code when not all data is passed through on log in
+'''
+
+def test_error_not_all_inputs_on_log_in( web_client, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    response = web_client.post('/login', data = {'email' :"blob@hotmail.com"})
+    assert response.status_code == 400
+    assert response.data.decode("utf-8") == "both email and password is required for logging in"
+
+
+'''
+We will get a redirect status code if email address does not exist
+'''
+
+def test_redirect_status_no_user( web_client, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    response = web_client.post('/login', data = {'email' :"happy@hotmail.com", 'password' : 'happiness&'})
+    assert response.status_code == 302
+
+
+'''
+We will render the register page if email address does not exist upon passing email and password through
+
+'''
+
+def test_render_register_when_login_no_user( page, test_web_address, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    page.goto(f"http://{test_web_address}/login")
+    page.fill("input[name=email]", "happy@hotmail.com")
+    page.fill("input[name=password]", "happiness&")
+    page.click("#submit_login")
+    heading_tag = page.locator("h1")
+    title_tag = page.locator("title")
+    expect(heading_tag).to_have_text("Register")
+    title_text = title_tag.inner_text()
+    assert title_text == "BlueberryBnB: Register"
+    
+
+'''
+We will get an error status code if password incorrect for an existing email
+'''
+
+def test_error_status_code_wrong_password_existing_user( web_client, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    response = web_client.post('/login', data = {'email' :"blob@hotmail.com", 'password' : 'happiness&'})
+    assert response.status_code == 400
+    assert response.data.decode("utf-8") == "Incorrect password"
+
+
+'''
+We will render the property page on successful login
+
+'''
+
+def test_we_will_see_list_properties_on_sucessful_login(page, test_web_address, db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    page.goto(f"http://{test_web_address}/login")
+    page.fill("input[name=email]", "blob@hotmail.com")
+    page.fill("input[name=password]", "testing0&")
+    page.click("#submit_login")
+    heading_tag = page.locator("h2")
+    title_tag = page.locator("title")
+    expect(heading_tag).to_have_text("Property Listings")
+    title_text = title_tag.inner_text()
+    assert title_text == "BlueberryBnB: Homepage"
+
+
+
+'''
 We can render the register page
 
 '''
@@ -47,11 +128,74 @@ def test_render_register(page, test_web_address):
 
 
 '''
+There will be an error status code for if there are no inputs into the fields
+
+'''
+def test_register_error_no_inputs(web_client):
+    web_client.get('/register')
+    post_response = web_client.post('/register')
+    assert post_response.status_code == 400
+    assert post_response.data.decode("utf-8") == "You need all inputs to be filled in!"
+
+
+'''
+There will be an error status code for if the email already exists
+
+'''
+def test_register_error_email_already_exists(db_connection, web_client):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    web_client.get('/register')
+    post_response = web_client.post('/register', data = {'email': "email2@hotmail.com" , 'password' : "blosdhisd"})
+    assert post_response.status_code == 400
+    assert post_response.data.decode("utf-8") == "Email has already been registered"
+
+
+'''
+There will be an string and error status code if there is an invalid password - length not at least 8 characters
+
+'''
+def test_register_error_invalid_password_length(db_connection, web_client):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    web_client.get('/register')
+    post_response = web_client.post('/register', data = {'email': "hello@hello.com" , 'password' : "23tyd%'"})
+    assert post_response.status_code == 400
+    assert post_response.data.decode("utf-8") == "Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-"
+
+'''
+There will be an string and error status code if there is an invalid password - does not include special characters 
+
+'''
+
+def test_register_error_invalid_password_no_special_characters(db_connection, web_client):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    web_client.get('/register')
+    post_response = web_client.post('/register', data = {'email': "hello@hello.com" , 'password' : "23tydsdsd"})
+    assert post_response.status_code == 400
+    assert post_response.data.decode("utf-8") == "Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-"
+
+'''
+The successful login page will be rendered if there is a successful login
+
+'''
+
+def test_successful_registration_rendered_on_successful_registration(db_connection, page, test_web_address):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    page.goto(f"http://{test_web_address}/register")
+    page.fill("input[name=email]", "hello2@hello2.com")
+    page.fill("input[name=password]", "hello2@hello2")
+    page.click("#register")
+    heading_tag = page.locator("h2")
+    title_tag = page.locator("title")
+    expect(heading_tag).to_have_text("You have successfully registered with the following email: hello2@hello2.com")
+    title_text = title_tag.inner_text()
+    assert title_text == "BlueberryBnB: Successful registration"
+
+'''
 We can render the add property page, and has the input fields with labels
 
 '''
 
-def test_render_property(page, test_web_address, login):
+def test_render_property(page, test_web_address,login):
     page.goto(f"http://{test_web_address}/add_property")
     heading_tag = page.locator("h1")
     title_tag = page.locator("title")
@@ -197,35 +341,26 @@ def test_not_logged_in_get_my_properties_redirect(db_connection, web_client, pag
 
 
 
-# '''
-# When I GET/my_properties I see a list of my properties if  I am logged in
+'''
+When I GET/my_properties I see a list of my properties if  I am logged in
 
-# '''
+'''
 
-# #flask app not handling session data, and appears to not recognise the session data!, or it is an issue with playwright handling?
 
-# def test_get_my_properties(db_connection, web_client, page, test_web_address):
-#     db_connection.seed("seeds/blueberries_bnb.sql") 
+def test_get_my_properties(db_connection, web_client, page, test_web_address, login):
+    db_connection.seed("seeds/blueberries_bnb.sql") 
 
-#     with web_client.session_transaction() as session:
-#         session['user_id'] = '3'
+    page.goto(f"http://{test_web_address}/my_properties")
     
-#     print(f"before going to the page : {session['user_id']}")
-    
-#     page.goto(f"http://{test_web_address}/my_properties")
-    
-#     print(f"after going to the page: {session['user_id']}")
-#     h1_tag = page.locator("h1")
-#     print(f"h1 tag text is {h1_tag.inner_text()}")
-#     title_tag = page.locator("title")
-#     title_text = title_tag.inner_text()
-#     print("Actual title text:", title_text)
-#     expect(h1_tag).to_have_text("My properties")
-#     assert title_text == "BlueberryBnB: My properties"
-#     list_items = page.locator("#my-property-listings ul > li")
-#     expect(list_items).to_contain_text([
-#         "Property3 - Description: windy - Price per night 83.0",
-#     ])
+    h1_tag = page.locator("h1")
+    title_tag = page.locator("title")
+    title_text = title_tag.inner_text()
+    expect(h1_tag).to_have_text("My properties")
+    assert title_text == "BlueberryBnB: My properties"
+    list_items = page.locator("#my-property-listings ul > li")
+    expect(list_items).to_contain_text([
+        "Property1 - Description: hot - Price per night 25.4",
+    ])
 
 
 '''

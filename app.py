@@ -57,7 +57,7 @@ def get_registration_page():
             connection = get_flask_database_connection(app)
             repository = UserRepository(connection)
             if repository.check_email_exists(email_from_form) == True:
-                return "Email has already been registered"
+                return "Email has already been registered", 400
             else:
                 special_characters = '!@$%^&#~;:><=+-'
                 password_special_char = [char for char in special_characters if char in password_from_form]
@@ -67,8 +67,7 @@ def get_registration_page():
                         new_user = User(None, email_from_form, hash_password) 
                         repository.create_new_user(new_user)
                 else:
-                    return '''Password must contain at least 8 characters and include 
-                    one of the following characters !@$%^&#~;:><=+- '''
+                    return 'Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-', 400
             return render_template('successful_registration.html', email=email_from_form)
 
     else:
@@ -260,20 +259,22 @@ def login_user():
 
         # Ensure username exists and password is correct
         user = repo.find_user(email)
+        
+        try:
+            session["user_id"] = user.id
+            check_password_hash(user.password, password)
+        except AttributeError:
+            return redirect("/register")
+        
         if check_password_hash(user.password, password):
-            try:
-                session["user_id"] = user.id
-            except AttributeError:
-                return redirect("/register")
-        
-        else:
-            return "Incorrect password"
-        
-        # Remember which user has logged in
-        session["user_id"] = user.id
+            # Remember which user has logged in
+            session["user_id"] = user.id
 
-        # Redirect user to home page
-        return redirect("/")
+            # Redirect user to home page
+            return redirect("/")
+        else:
+            return "Incorrect password", 400
+        
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
