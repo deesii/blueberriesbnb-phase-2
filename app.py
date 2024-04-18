@@ -9,6 +9,7 @@ from lib.user import User
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from functools import wraps
+from datetime import date, datetime
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -89,6 +90,7 @@ def show_property_by_id(id):
     return render_template('get_property.html', property=property)
 
 @app.route('/properties/<int:id>', methods=['POST'])
+@login_required
 def create_booking(id):
     """
     If all details are valid, a property should be booked by filling in the booking form
@@ -100,18 +102,27 @@ def create_booking(id):
     date_to = request.form.get('date_to')
     booker_id = session.get("user_id")
 
-    connection = get_flask_database_connection(app)
-    repository = BookingRepository(connection)
-    booking = Booking(
-        None,
-        id,
-        date_from,
-        date_to,
-        False,
-        booker_id
-    )
-    repository.create_booking(booking)
-    return redirect("/bookings") , 302
+    todays_date = date.today()
+    date_from_obj = datetime.strptime(date_from,"%Y-%m-%d").date()
+    date_to_obj = datetime.strptime(date_to,"%Y-%m-%d").date()
+    day_from_today_time_delta_obj = date_from_obj - todays_date
+    days_from_to_time_delta_obj = date_to_obj - date_from_obj
+
+    if day_from_today_time_delta_obj.days >= 0 and days_from_to_time_delta_obj.days >= 0:
+        connection = get_flask_database_connection(app)
+        repository = BookingRepository(connection)
+        booking = Booking(
+            None,
+            id,
+            date_from,
+            date_to,
+            False,
+            booker_id
+        )
+        repository.create_booking(booking)
+        return redirect("/bookings") , 302
+    else:
+        return "Invalid date selection", 400
     
 
 @app.route('/bookings', methods=['GET'])
