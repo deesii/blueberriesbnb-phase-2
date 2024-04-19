@@ -53,25 +53,22 @@ def get_registration_page():
         password_from_form = request.form.get('password')
         if not email_from_form or not password_from_form:
             return 'You need all inputs to be filled in!', 400
+        
+        connection = get_flask_database_connection(app)
+        repository = UserRepository(connection)
+        if repository.check_email_exists(email_from_form):
+            return "Email has already been registered", 400
+        
+        if repository.check_password_valid(password_from_form):
+            hash_password = generate_password_hash(password_from_form)
+            new_user = User(None, email_from_form, hash_password) 
+            repository.create_new_user(new_user)
         else:
-            connection = get_flask_database_connection(app)
-            repository = UserRepository(connection)
-            if repository.check_email_exists(email_from_form) == True:
-                return "Email has already been registered", 400
-            else:
-                special_characters = '!@$%^&#~;:><=+-'
-                password_special_char = [char for char in special_characters if char in password_from_form]
-                password_valid = len(password_from_form) >= 8 and len(password_special_char) > 0
-                if password_valid:
-                        hash_password = generate_password_hash(password_from_form)
-                        new_user = User(None, email_from_form, hash_password) 
-                        repository.create_new_user(new_user)
-                else:
-                    return 'Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-', 400
-            return render_template('successful_registration.html', email=email_from_form)
+            return 'Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-', 400
+        
+        return render_template('successful_registration.html', email=email_from_form)
 
-    else:
-        return render_template('register.html')
+    return render_template('register.html')
 
 
 @app.route('/', methods=['GET'])
@@ -150,8 +147,6 @@ def list_bookings():
         booked_properties = []
         
         for booking in bookings:
-            # print(booking)
-            # print(booking.property_id)
             booking_id_to_find = booking.property_id
             for property in properties:
                 if property._id == booking_id_to_find:

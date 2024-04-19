@@ -34,14 +34,9 @@ class UserRepository():
         return self.find_user(user_email) != None
 
         
-    # def check_password_valid(self, password):
-    #     special_characters = '!@$%^&#~;:><=+-'
-    #     password_special_char = [char for char in special_characters if char in password]
-    #     return len(password) >= 8 and len(password_special_char) > 0
+    def check_password_valid(self, password):
+        special_characters = '!@$%^&#~;:><=+-'
+        password_special_char = [char for char in special_characters if char in password]
+        return len(password) >= 8 and len(password_special_char) > 0
     
 
-    # def hash_password(self, password):
-    #     return generate_password_hash(password)
-
-    # def check_password(self, stored_hash, password):
-    #     return check_password_hash(stored_hash, password)

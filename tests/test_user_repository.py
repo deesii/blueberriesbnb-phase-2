@@ -94,49 +94,49 @@ def test_check_email_does_not_exist(db_connection):
     assert result == False
 
 
-# '''
-# When a password is provided, and it is a valid password with 8 or more characters, 
-# it will return a message that it is valid
-# '''
+'''
+When a password is provided, and it is a valid password with 8 or more characters, 
+it will return a message that it is valid
+'''
 
-# def test_check_password_valid_password(db_connection):
-#     db_connection.seed("seeds/blueberries_bnb.sql")
-#     repository = UserRepository(db_connection)
-#     result = repository.check_password_valid('blobsdf1%')
-#     assert result == True
-
-
-
-# '''
-# When a incorrect length password is provided, it return false
-# that the password needs to be at least 8 characters long and has to contain one of the special characters 
-
-# '''
-
-# def test_check_password_invalid_length_password(db_connection):
-#     db_connection.seed("seeds/blueberries_bnb.sql")
-#     repository = UserRepository(db_connection)
-#     result = repository.check_password_valid('23tyd%')
-#     assert result ==  False
+def test_check_password_valid_password(db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    repository = UserRepository(db_connection)
+    result = repository.check_password_valid('blobsdf1%')
+    assert result == True
 
 
-# '''
-# When an invalid password which does not contain any of the special characters is provided,
-# it will return false 
-# '''
 
-# def test_check_password_no_specials_char(db_connection):
-#     db_connection.seed("seeds/blueberries_bnb.sql")
-#     repository = UserRepository(db_connection)
-#     result = repository.check_password_valid('23tydsdsd')
-#     assert result == False
+'''
+When a incorrect length password is provided, it return false
+that the password needs to be at least 8 characters long and has to contain one of the special characters 
 
-# '''
-# when a password is provided that has apostrophes but it is a valid password
-# it will return false
-# '''
-# def test_check_password_apostrophe_specials_char(db_connection):
-#     db_connection.seed("seeds/blueberries_bnb.sql")
-#     repository = UserRepository(db_connection)
-#     result = repository.check_password_valid('"dfsdfdfdf54')
-#     assert result == False
+'''
+
+def test_check_password_invalid_length_password(db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    repository = UserRepository(db_connection)
+    result = repository.check_password_valid('23tyd%')
+    assert result ==  False
+
+
+'''
+When an invalid password which does not contain any of the special characters is provided,
+it will return false 
+'''
+
+def test_check_password_no_specials_char(db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    repository = UserRepository(db_connection)
+    result = repository.check_password_valid('23tydsdsd')
+    assert result == False
+
+'''
+when a password is provided that has apostrophes but it is a valid password
+it will return false
+'''
+def test_check_password_apostrophe_specials_char(db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    repository = UserRepository(db_connection)
+    result = repository.check_password_valid('"dfsdfdfdf54')
+    assert result == False
