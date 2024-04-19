@@ -45,10 +45,10 @@ CREATE TABLE bookings (
     on delete cascade
 );
 
-INSERT INTO users (email) VALUES ('blob@hotmail.com');
-INSERT INTO users (email) VALUES ('email2@hotmail.com');
-INSERT INTO users (email) VALUES ('email3@email.com');
-INSERT INTO users (email) VALUES ('email4@email.com');
+INSERT INTO users (email, password) VALUES ('blob@hotmail.com', 'scrypt:32768:8:1$D5hPxJWs7M5vRKiG$c7b58270a7aa94d2c46562cf7997242b2e125b64efc2e606334d6cec4bfa109476cf42834d6c6a2bc3a7e7e731c59652a14ea954d1f565796f6cd47aebd180bf');
+INSERT INTO users (email, password) VALUES ('email2@hotmail.com', 'scrypt:32768:8:1$0oFHlAmpvTynd2Cu$827d8271180250b1c2ac44d0f43c98e5da2bdb85e3b2327cb97386794a5327e1ceeb56b672d2a7dc8f5074d9c7afabfe4526be6f347bf8e83a4acfa762972080');
+INSERT INTO users (email, password) VALUES ('email3@email.com', 'scrypt:32768:8:1$4zgtCgNqq9Xa2XXL$182dcccc5e52fd9d8955b551c171a5de7da0703556bc6e4ebe8a6d21f089645c07d981294bbdc2a6500e8ea4a4a69d02744afb81686fbac214c6be27fe49319f');
+INSERT INTO users (email, password) VALUES ('email4@email.com', 'scrypt:32768:8:1$Lf5XkQnZG1pgvVQX$cfb10e933e3e89deb8838717e44834cf5044edf092829fc46508acbd8ff6d97eb391749ff093fccb05be65e797321d41b2912b77715382640f8812f2b72b8693');
 INSERT INTO properties (property_name, user_id, description, price_per_night) VALUES ('Property1', 1, 'hot', 25.40);
 INSERT INTO properties (property_name, user_id, description, price_per_night) VALUES ('Property2', 2, 'cold', 45.70);
 INSERT INTO properties (property_name, user_id, description, price_per_night) VALUES ('Property3', 3, 'windy', 83.00);

@@ -9,7 +9,9 @@ from lib.user import User
 from lib.booking_repository import BookingRepository
 from lib.booking import Booking
 from functools import wraps
+from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import date, datetime
+
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -50,21 +52,25 @@ def get_registration_page():
     """
     if request.method == 'POST':
         email_from_form = request.form.get('email')
-        if email_from_form:
-            connection = get_flask_database_connection(app)
-            repository = UserRepository(connection)
-            if repository.check_email_exists(email_from_form) == False:
-                new_user = User(None, email_from_form) 
-                repository.create_new_user(new_user)
-            else:
-                return "Email already exists"
-            
-            return render_template('successful_registration.html', email=email_from_form)
-            # else:
-            # #     return "Email has already been registered!"
-    
-    else:
-        return render_template('register.html')
+        password_from_form = request.form.get('password')
+        if not email_from_form or not password_from_form:
+            return 'You need all inputs to be filled in!', 400
+        
+        connection = get_flask_database_connection(app)
+        repository = UserRepository(connection)
+        if repository.check_email_exists(email_from_form):
+            return "Email has already been registered", 400
+        
+        if repository.check_password_valid(password_from_form):
+            hash_password = generate_password_hash(password_from_form)
+            new_user = User(None, email_from_form, hash_password) 
+            repository.create_new_user(new_user)
+        else:
+            return 'Password must contain at least 8 characters and include one of the following characters !@$%^&#~;:><=+-', 400
+        
+        return render_template('successful_registration.html', email=email_from_form)
+
+    return render_template('register.html')
 
 
 @app.route('/', methods=['GET'])
@@ -153,8 +159,6 @@ def list_bookings():
         booked_properties = []
         
         for booking in bookings:
-            # print(booking)
-            # print(booking.property_id)
             booking_id_to_find = booking.property_id
             for property in properties:
                 if property._id == booking_id_to_find:
@@ -250,31 +254,34 @@ def login_user():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure username was submitted
-        # if not request.form.get("email"):
-        #     return apology("must provide username", 403)
-
-        # # Ensure password was submitted
-        # elif not request.form.get("password"):
-        #     return apology("must provide password", 403)
+        #ensure password and username filled in
+        if not request.form.get("email") or not request.form.get("password"):
+            return "both email and password is required for logging in" , 400
 
         # Query database for username
         connection = get_flask_database_connection(app)
         repo = UserRepository(connection)
         email = request.form.get("email")
+        password = request.form.get("password")
 
         # Ensure username exists and password is correct
         user = repo.find_user(email)
+        
         try:
             session["user_id"] = user.id
+            check_password_hash(user.password, password)
         except AttributeError:
             return redirect("/register")
         
-        # Remember which user has logged in
-        session["user_id"] = user.id
+        if check_password_hash(user.password, password):
+            # Remember which user has logged in
+            session["user_id"] = user.id
 
-        # Redirect user to home page
-        return redirect("/")
+            # Redirect user to home page
+            return redirect("/")
+        else:
+            return "Incorrect password", 400
+        
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
