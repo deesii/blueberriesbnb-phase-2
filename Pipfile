@@ -12,6 +12,7 @@ pytest-xprocess = "*"
 py = "*"
 playwright = "*"
 flask-session = "*"
+python-dotenv = "*"
 
 [dev-packages]
 autopep8 = "*"

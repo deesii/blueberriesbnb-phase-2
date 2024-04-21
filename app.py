@@ -11,6 +11,7 @@ from lib.booking import Booking
 from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import date, datetime
+from dotenv import load_dotenv
 
 
 # Create a new Flask app
@@ -20,7 +21,9 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-
+load_dotenv()
+print("THIS IS MY ENV VAR")
+print(os.getenv("DB_URL"))
 # == Your Routes Here ==
 
 

@@ -2,7 +2,6 @@ import os, psycopg
 from flask import g
 from psycopg.rows import dict_row
 
-
 # This class helps us interact with the database.
 # It wraps the underlying psycopg library that we are using.
 
@@ -20,12 +19,13 @@ class DatabaseConnection:
     # to localhost and select the database name given in argument.
     def connect(self):
         try:
+            string_connection = f"{os.getenv('DB_URL')}"
             self.connection = psycopg.connect(
-                f"postgresql://localhost/{self._database_name()}",
+                f"{string_connection}",
                 row_factory=dict_row)
         except psycopg.OperationalError:
-            raise Exception(f"Couldn't connect to the database {self._database_name()}! " \
-                    f"Did you create it using `createdb {self._database_name()}`?")
+            raise Exception(f"Couldn't connect to the database {string_connection}! " \
+                    f"Did you create it using `createdb {string_connection}`?")
 
     # This method seeds the database with the given SQL file.
     # We use it to set up our database ready for our tests or application.
