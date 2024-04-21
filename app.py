@@ -22,8 +22,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 load_dotenv()
-print("THIS IS MY ENV VAR")
-print(os.getenv("DB_URL"))
 # == Your Routes Here ==
 
 
