@@ -79,7 +79,7 @@ def test_render_register_when_login_no_user( page, test_web_address, db_connecti
     title_tag = page.locator("title")
     expect(heading_tag).to_have_text("Register")
     title_text = title_tag.inner_text()
-    assert title_text == "BlueberryBnB: Register"
+    assert title_text == "BlueberriesBnB: Register"
     
 
 '''
@@ -108,7 +108,7 @@ def test_we_will_see_list_properties_on_sucessful_login(page, test_web_address, 
     title_tag = page.locator("title")
     expect(heading_tag).to_have_text("Property Listings")
     title_text = title_tag.inner_text()
-    assert title_text == "BlueberryBnB: Homepage"
+    assert title_text == "BlueberriesBnB: Homepage"
 
 
 
@@ -123,8 +123,8 @@ def test_render_register(page, test_web_address):
     expect(heading_tag).to_have_text("Register")
     title_text = title_tag.inner_text()
     print("Actual title text:", title_text)
-    #expect(title_tag).to_have_text("BlueberryBnB: Register") for some reason this appears to fail the test whereas the below text works.
-    assert title_text == "BlueberryBnB: Register"
+    #expect(title_tag).to_have_text("BlueberriesBnB: Register") for some reason this appears to fail the test whereas the below text works.
+    assert title_text == "BlueberriesBnB: Register"
 
 
 '''
@@ -188,7 +188,7 @@ def test_successful_registration_rendered_on_successful_registration(db_connecti
     title_tag = page.locator("title")
     expect(heading_tag).to_have_text("You have successfully registered with the following email: hello2@hello2.com")
     title_text = title_tag.inner_text()
-    assert title_text == "BlueberryBnB: Successful registration"
+    assert title_text == "BlueberriesBnB: Successful registration"
 
 '''
 We can render the add property page, and has the input fields with labels
@@ -202,8 +202,8 @@ def test_render_property(page, test_web_address,login):
     expect(heading_tag).to_have_text("Add New Property")
     title_text = title_tag.inner_text()
     print(f"title text is : {title_text}")
-    #expect(title_tag).to_have_text("BlueberryBnB: Add New Property") --> unsure why this doesnt behave accordingly
-    assert title_text == "BlueberryBnB: Add New Property"
+    #expect(title_tag).to_have_text("BlueberriesBnB: Add New Property") --> unsure why this doesnt behave accordingly
+    assert title_text == "BlueberriesBnB: Add New Property"
     labels = page.locator("label")
     text_inputs = page.locator("input[type='text']")
     submit_inputs = page.locator("input[type='submit']")
@@ -337,7 +337,7 @@ def test_not_logged_in_get_my_properties_redirect(db_connection, web_client, pag
     title_text = title_tag.inner_text()
     print("Actual title text:", title_text)
     expect(h1_tag).to_have_text("Login")
-    assert title_text == "BlueberryBnB: Login"
+    assert title_text == "BlueberriesBnB: Login"
 
 
 
@@ -356,7 +356,7 @@ def test_get_my_properties(db_connection, web_client, page, test_web_address, lo
     title_tag = page.locator("title")
     title_text = title_tag.inner_text()
     expect(h1_tag).to_have_text("My properties")
-    assert title_text == "BlueberryBnB: My properties"
+    assert title_text == "BlueberriesBnB: My properties"
     list_items = page.locator("#my-property-listings ul > li")
     expect(list_items).to_contain_text([
         "Property1 - Description: hot - Price per night 25.4",
