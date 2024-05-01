@@ -55,8 +55,13 @@ class BookingRepository():
     
     def dates_taken(self, property_id):
         bookings = self.show_property_bookings(property_id)
+        dates_taken = []
+        for booking in bookings:
+            if booking.approved:
+                dates_taken += self._dates_in_range(booking.dates_booked_from, booking.dates_booked_to)
+        return dates_taken
 
-    def dates_in_range(self, date_from, date_to=None):
+    def _dates_in_range(self, date_from, date_to=None):
         if not date_to:
             date_from = datetime.strptime(date_from, "%Y-%m-%d")
             return [date_from.strftime("%d/%m/%Y")]

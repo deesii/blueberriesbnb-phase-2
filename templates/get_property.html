@@ -17,24 +17,33 @@
 
         <form action="/properties/{{property._id}}" method="post">
                 <label for="date_from">Date From: </label>
-                <div class="input-group date">
+                <div class="input-daterange input-group" id="datepicker">
                     <input 
                         type="text"
-                        class="form-control" 
-                        name="date_from" 
+                        class="form-control date-field" 
+                        name="start" 
                         id="date_from" 
                         placeholder="DD/MM/YYYY"
                     >
-                    <div class="input-group-addon" id="input_icon">
+                    <div class="input-group-addon input-icon" id="input_icon_from">
+                        <span id="basic-addon1">
+                            <i class="fa-regular fa-calendar"></i>
+                        </span>
+                    </div>
+                    <span class="input-group-addon" id="date-separator"><label class="input-group-addon" for="date_to">To:</label></span>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="end" 
+                        id="date_to" 
+                        placeholder="DD/MM/YYYY"
+                    >
+                    <div class="input-group-addon input-icon" id="input_icon_end">
                         <span id="basic-addon2">
                             <i class="fa-regular fa-calendar"></i>
                         </span>
                     </div>
                 </div>
-            
-            <label for="date_to">Date To:</label>
-            <input type="date" name="date_to" id="date_to", placeholder="DD/MM/YYYY">
-            <br><br>
             <input type="submit" value="Create Booking">
             
         </form>
@@ -42,12 +51,16 @@
 
     <script>
         $(document).ready(function() {
-            $('.input-group.date').datepicker({
+
+            let date = new Date();
+
+            $('#datepicker').datepicker({
                 format: "dd/mm/yyyy",
+                startDate: date,
                 todayBtn: "linked",
                 clearBtn: true,
                 todayHighlight: true,
-                datesDisabled: {{booked_dates | tojson}},
+                datesDisabled: {{dates_taken | tojson}},
             });
         });
     </script>

@@ -84,21 +84,43 @@ def test_dates_taken(db_connection):
     db_connection.seed("seeds/blueberries_bnb.sql")
     repository = BookingRepository(db_connection)
     dates = repository.dates_taken(1)
-    # assert dates == [
-    #     "27/03/2024",
-    #     "28/03/2024",
-    #     "29/03/2024"
-    # ]
-    
-def test_dates_in_range(db_connection):
-    db_connection.seed("seeds/blueberries_bnb.sql")
-    repository = BookingRepository(db_connection)
-    dates = repository.dates_in_range("2024-03-27", "2024-03-29")
     assert dates == [
         "27/03/2024",
         "28/03/2024",
         "29/03/2024"
     ]
-    assert repository.dates_in_range("2024-03-27") == ["27/03/2024"]
+    assert repository.dates_taken(3) == [
+        "01/07/2024",
+        "02/07/2024",
+        "03/07/2024",
+        "04/07/2024",
+        "05/07/2024",
+        "06/07/2024",
+        "07/07/2024",
+        "08/07/2024",
+        "09/07/2024",
+        "10/07/2024",
+        "01/06/2024",
+        "02/06/2024",
+        "03/06/2024",
+        "04/06/2024",
+        "05/06/2024",
+        "06/06/2024",
+        "07/06/2024",
+        "08/06/2024",
+        "09/06/2024",
+        "10/06/2024",
+    ]
+    
+def test_dates_in_range(db_connection):
+    db_connection.seed("seeds/blueberries_bnb.sql")
+    repository = BookingRepository(db_connection)
+    dates = repository._dates_in_range("2024-03-27", "2024-03-29")
+    assert dates == [
+        "27/03/2024",
+        "28/03/2024",
+        "29/03/2024"
+    ]
+    assert repository._dates_in_range("2024-03-27") == ["27/03/2024"]
 
 

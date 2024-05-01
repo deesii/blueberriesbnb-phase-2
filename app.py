@@ -94,8 +94,9 @@ def show_property_by_id(id):
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
     
-    booked_dates = ['03/05/2024', '05/05/2024']
-    return render_template('get_property.html', property=property, booked_dates=booked_dates)
+    repository = BookingRepository(connection)
+    dates_taken = repository.dates_taken(id)
+    return render_template('get_property.html', property=property, dates_taken=dates_taken), 200
 
 @app.route('/properties/<int:id>', methods=['POST'])
 @login_required
