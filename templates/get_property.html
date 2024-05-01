@@ -15,7 +15,7 @@
         Price per night: £{{property._price_per_night}}
     </p>
 
-        <form action="/properties/{{property._id}}" method="post">
+        <form action="/properties/{{property._id}}" method="post" id="booking-form">
                 <label for="date_from">Date From: </label>
                 <div class="input-daterange input-group" id="datepicker">
                     <input 
@@ -52,6 +52,7 @@
     <script>
         $(document).ready(function() {
 
+            const datesTaken = {{dates_taken | tojson}};
             let date = new Date();
 
             $('#datepicker').datepicker({
@@ -60,8 +61,54 @@
                 todayBtn: "linked",
                 clearBtn: true,
                 todayHighlight: true,
-                datesDisabled: {{dates_taken | tojson}},
+                datesDisabled: datesTaken,
             });
+
+            $("#date_to").on("change", datesTaken, function() {
+                let dateFrom = $("#date_from").val();
+                let dateTo = $("#date_to").val();
+                if (dateFrom && dateTo) {
+                    dateFrom = DMYtoDate(dateFrom);
+                    dateTo= DMYtoDate(dateTo);
+                    while (dateFrom < dateTo) {
+                        let dateFromStr = dateToDMY(dateFrom);
+                        if (datesTaken.includes(dateFromStr)) {
+                            alert("Date " + dateFromStr + " in chosen range is already taken");
+                            $("#date_from").val("");
+                            $("#date_to").val("");
+                            break;
+                        }
+                        dateFrom.setDate(dateFrom.getDate() + 1);
+                    }
+                }
+            })
+            $("#booking-form").on("submit", function(){
+                let dateFrom = $("#date_from").val();
+                let dateTo = $("#date_to").val();
+                if (!dateFrom || !dateTo) {
+                    alert("Please select both dates");
+                    return false;
+                }
+
+            })
+            function dateToDMY(date) {
+                let dd = date.getDate();
+                let mm = date.getMonth() + 1;
+                let yyyy = date.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return dd + '/' + mm + '/' + yyyy;
+            }
+
+            function DMYtoDate(dateString){
+                let parts = dateString.split("/");
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
         });
     </script>
 {% endblock %}
