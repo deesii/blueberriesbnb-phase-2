@@ -93,7 +93,9 @@ def show_property_by_id(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
-    return render_template('get_property.html', property=property)
+    
+    booked_dates = ['03/05/2024', '05/05/2024']
+    return render_template('get_property.html', property=property, booked_dates=booked_dates)
 
 @app.route('/properties/<int:id>', methods=['POST'])
 @login_required

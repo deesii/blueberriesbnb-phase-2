@@ -229,11 +229,6 @@ textarea:focus{
 }
 
 
-input[type = text]{
-    width: 100%;
-    border: 2px solid pink;
-    border-radius: 4px;
-}
 
 /* input#property_name{
     width: 100%;
@@ -310,3 +305,40 @@ input[type=date] {
     color: hsl(0, 6%, 28%);
 
 }
+
+
+input[type = text]{
+    width: 100%;
+    border: 2px solid pink;
+    border-radius: 4px;
+}
+
+#date_from {
+    position: absolute;
+    height: 35px;
+    margin: 0 auto 10;
+    width: 100%;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border:pink;
+    border-style: dotted;
+    border-radius: 12px;
+    padding: 3px 3px;
+    color: hsl(0, 6%, 28%);
+}
+
+#input_icon {
+    position: relative;
+    left: 240px;
+    height: 35px;
+    margin: 5px auto;
+    width: 100%;
+    font-size: 18px;
+    border:pink;
+    border-radius: 12px;
+    color: hsl(0, 6%, 28%);
+}
+
+

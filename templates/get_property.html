@@ -16,14 +16,39 @@
     </p>
 
         <form action="/properties/{{property._id}}" method="post">
-            <label for="date_from">Date From: </label>
-            <input type="date" name="date_from" value="date_from">
-            <br>
+                <label for="date_from">Date From: </label>
+                <div class="input-group date">
+                    <input 
+                        type="text"
+                        class="form-control" 
+                        name="date_from" 
+                        id="date_from" 
+                        placeholder="DD/MM/YYYY"
+                    >
+                    <div class="input-group-addon" id="input_icon">
+                        <span id="basic-addon2">
+                            <i class="fa-regular fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            
             <label for="date_to">Date To:</label>
-            <input type="date" name="date_to" value="date_to">
+            <input type="date" name="date_to" id="date_to", placeholder="DD/MM/YYYY">
             <br><br>
             <input type="submit" value="Create Booking">
             
         </form>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.input-group.date').datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                todayHighlight: true,
+                datesDisabled: {{booked_dates | tojson}},
+            });
+        });
+    </script>
 {% endblock %}

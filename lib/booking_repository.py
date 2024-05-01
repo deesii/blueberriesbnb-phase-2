@@ -1,4 +1,6 @@
 from lib.booking import Booking
+from datetime import datetime
+import pandas as pd
 
 
 class BookingRepository():
@@ -50,6 +52,25 @@ class BookingRepository():
     def change_booking_approval(self, id):
         self._connection.execute("UPDATE bookings SET approved = 'TRUE' WHERE id = %s" , (id,))
         return None
+    
+    def dates_taken(self, property_id):
+        bookings = self.show_property_bookings(property_id)
+
+    def dates_in_range(self, date_from, date_to=None):
+        if not date_to:
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+            return [date_from.strftime("%d/%m/%Y")]
+
+        date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        date_to = datetime.strptime(date_to, "%Y-%m-%d")
+        
+        timestamps = pd.date_range(date_from, date_to).tolist()
+        return [timestamp.strftime("%d/%m/%Y") for timestamp in timestamps]
+
+
+
+
+
 
 
     
