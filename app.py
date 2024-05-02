@@ -104,16 +104,16 @@ def create_booking(id):
     """
     If all details are valid, a property should be booked by filling in the booking form
     """
-    if not request.form.get('date_from') or not request.form.get('date_to'):
+    if not request.form.get('start') or not request.form.get('end'):
         return 'One of the inputs is not filled in!', 400
     
-    date_from = request.form.get('date_from')
-    date_to = request.form.get('date_to')
+    date_from = request.form.get('start')
+    date_to = request.form.get('end')
     booker_id = session.get("user_id")
 
     todays_date = date.today()
-    date_from_obj = datetime.strptime(date_from,"%Y-%m-%d").date()
-    date_to_obj = datetime.strptime(date_to,"%Y-%m-%d").date()
+    date_from_obj = datetime.strptime(date_from,"%d/%m/%Y").date()
+    date_to_obj = datetime.strptime(date_to,"%d/%m/%Y").date()
     day_from_today_time_delta_obj = date_from_obj - todays_date
     days_from_to_time_delta_obj = date_to_obj - date_from_obj
 
@@ -123,8 +123,8 @@ def create_booking(id):
         booking = Booking(
             None,
             id,
-            date_from,
-            date_to,
+            date_from_obj.strftime("%Y-%m-%d"),
+            date_to_obj.strftime("%Y-%m-%d"),
             False,
             booker_id
         )
