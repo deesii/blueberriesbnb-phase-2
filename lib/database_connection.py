@@ -15,17 +15,19 @@ class DatabaseConnection:
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
 
-    # This method connects to PostgreSQL using the psycopg library. We connect
-    # to localhost and select the database name given in argument.
+    '''This method connects to PostgreSQL using the psycopg library. We connect
+    to either localhost locally or the deployment url via the environmental variable
+    DB_URL'''
+
     def connect(self):
         try:
-            string_connection = f"{os.getenv('DB_URL')}"
+            db_url = os.getenv('DB_URL')
             self.connection = psycopg.connect(
-                f"{string_connection}",
+                db_url,
                 row_factory=dict_row)
         except psycopg.OperationalError:
-            raise Exception(f"Couldn't connect to the database {string_connection}! " \
-                    f"Did you create it using `createdb {string_connection}`?")
+            raise Exception(f"Couldn't connect to the database <name_of_database>! " \
+                    f"Did you create it using `createdb <name_of_database>`?")
 
     # This method seeds the database with the given SQL file.
     # We use it to set up our database ready for our tests or application.
