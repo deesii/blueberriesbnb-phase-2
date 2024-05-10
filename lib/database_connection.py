@@ -5,11 +5,8 @@ from psycopg.rows import dict_row
 # This class helps us interact with the database.
 # It wraps the underlying psycopg library that we are using.
 
-# If the below seems too complex right now, that's OK.
-# That's why we have provided it!
 class DatabaseConnection:
-    # VVV CHANGE BOTH OF THESE VVV
-    DEV_DATABASE_NAME = "BLUEBERRIES_BnB"
+
     TEST_DATABASE_NAME = "BLUEBERRIES_BnB_TEST"
 
     def __init__(self, test_mode=False):
@@ -40,7 +37,7 @@ class DatabaseConnection:
             self.connection.commit()
 
     # This method executes an SQL query on the database.
-    # It allows you to set some parameters too. You'll learn about this later.
+    # It allows you to set some parameters too. 
     def execute(self, query, params=[]):
         self._check_connection()
         with self.connection.cursor() as cursor:
@@ -63,15 +60,8 @@ class DatabaseConnection:
         if self.connection is None:
             raise Exception(self.CONNECTION_MESSAGE)
 
-    # This private method returns the name of the database we should use.
-    def _database_name(self):
-        if self.test_mode:
-            return self.TEST_DATABASE_NAME
-        else:
-            return self.DEV_DATABASE_NAME
-
 # This function integrates with Flask to create one database connection that
-# Flask request can use. To see how to use it, look at example_routes.py
+# Flask request can use. 
 def get_flask_database_connection(app):
     if not hasattr(g, 'flask_database_connection'):
         g.flask_database_connection = DatabaseConnection(
