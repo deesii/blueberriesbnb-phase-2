@@ -31,7 +31,7 @@ create .env file in project root directory with the following environmental vari
 If there is no user password set:
 
     DB_URL=postgresql://localhost/BLUEBERRIES_BnB_TEST 
-    PORT=5001
+
 
 
 ```shell
