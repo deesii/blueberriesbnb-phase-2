@@ -11,9 +11,9 @@
     
     <p> 
         Description: {{property._description}}<br>
-    <div class = "book-property-card">
-        Price per night: £{{property._price_per_night}}
     </p>
+    <div class = "book-property-card">
+        <p>Price per night: £{{property._price_per_night}}</p>
 
         <form action="/properties/{{property._id}}" method="post" id="booking-form">
                 <label for="date_from">Date From: </label>

@@ -301,7 +301,7 @@ def test_add_booking(page, test_web_address, db_connection, login):
     result = repository.list_booking_by_id(5)
     assert result == [
         Booking(5, 1, '2024-12-01', '2024-12-03', False, 1),
-    ] 
+    ]
     # page.screenshot(path="screenshot.png", full_page=True)
 
 
