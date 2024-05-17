@@ -328,12 +328,12 @@ input[type = text]{
     color: hsl(0, 6%, 28%);
 }
 
-#date_from{
+#start_date{
     position: absolute;
     border-radius: 12px;
 }
 
-#date_to{
+#end_date{
     border-radius: 12px;
 }
 #date-separator {

@@ -21,8 +21,8 @@
                     <input 
                         type="text"
                         class="form-control date-field" 
-                        name="start" 
-                        id="date_from" 
+                        name="start_date" 
+                        id="start_date" 
                         placeholder="DD/MM/YYYY"
                     >
                     <div class="input-group-addon input-icon" id="input_icon_from">
@@ -34,8 +34,8 @@
                     <input 
                         type="text" 
                         class="form-control" 
-                        name="end" 
-                        id="date_to" 
+                        name="end_date" 
+                        id="end_date" 
                         placeholder="DD/MM/YYYY"
                     >
                     <div class="input-group-addon input-icon" id="input_icon_end">
@@ -74,8 +74,8 @@
                         let dateFromStr = dateToDMY(dateFrom);
                         if (datesTaken.includes(dateFromStr)) {
                             alert("Date " + dateFromStr + " in chosen range is already taken");
-                            $("#date_from").val("");
-                            $("#date_to").val("");
+                            $("#start_date").val("");
+                            $("#end_date").val("");
                             break;
                         }
                         dateFrom.setDate(dateFrom.getDate() + 1);
@@ -83,8 +83,8 @@
                 }
             })
             $("#booking-form").on("submit", function(){
-                let dateFrom = $("#date_from").val();
-                let dateTo = $("#date_to").val();
+                let dateFrom = $("#start_date").val();
+                let dateTo = $("#end_date").val();
                 if (!dateFrom || !dateTo) {
                     alert("Please select both dates");
                     return false;
