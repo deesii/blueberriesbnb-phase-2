@@ -12,6 +12,9 @@ pytest-xprocess = "*"
 py = "*"
 playwright = "*"
 flask-session = "*"
+python-dotenv = "*"
+gunicorn = "*"
+colorama = "*"
 
 [dev-packages]
 autopep8 = "*"
