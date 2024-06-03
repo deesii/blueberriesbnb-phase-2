@@ -64,9 +64,9 @@
                 datesDisabled: datesTaken,
             });
 
-            $("#date_to").on("change", datesTaken, function() {
-                let dateFrom = $("#date_from").val();
-                let dateTo = $("#date_to").val();
+            $("#end_date").on("change", datesTaken, function() {
+                let dateFrom = $("#start_date").val();
+                let dateTo = $("#end_date").val();
                 if (dateFrom && dateTo) {
                     dateFrom = DMYtoDate(dateFrom);
                     dateTo= DMYtoDate(dateTo);
@@ -82,6 +82,15 @@
                     }
                 }
             })
+
+            $("#input_icon_from").on("click", function(){
+                $("#start_date").datepicker("show");
+            })
+
+            $("#input_icon_end").on("click", function(){
+                $("#end_date").datepicker("show");
+            })
+
             $("#booking-form").on("submit", function(){
                 let dateFrom = $("#start_date").val();
                 let dateTo = $("#end_date").val();
