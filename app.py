@@ -94,7 +94,10 @@ def show_property_by_id(id):
     connection = get_flask_database_connection(app)
     repository = PropertyRepository(connection)
     property = repository.find_property_by_id(id)
-    return render_template('get_property.html', property=property)
+    
+    repository = BookingRepository(connection)
+    dates_taken = repository.dates_taken(id)
+    return render_template('get_property.html', property=property, dates_taken=dates_taken), 200
 
 @app.route('/properties/<int:id>', methods=['POST'])
 @login_required
@@ -102,18 +105,18 @@ def create_booking(id):
     """
     If all details are valid, a property should be booked by filling in the booking form
     """
-    if not request.form.get('date_from') or not request.form.get('date_to'):
+    if not request.form.get('start_date') or not request.form.get('end_date'):
         return 'One of the inputs is not filled in!', 400
     
-    date_from = request.form.get('date_from')
-    date_to = request.form.get('date_to')
+    start_date = request.form.get('start_date')
+    end_date = request.form.get('end_date')
     booker_id = session.get("user_id")
 
     todays_date = date.today()
-    date_from_obj = datetime.strptime(date_from,"%Y-%m-%d").date()
-    date_to_obj = datetime.strptime(date_to,"%Y-%m-%d").date()
-    day_from_today_time_delta_obj = date_from_obj - todays_date
-    days_from_to_time_delta_obj = date_to_obj - date_from_obj
+    start_date_obj = datetime.strptime(start_date,"%d/%m/%Y").date()
+    end_date_obj = datetime.strptime(end_date,"%d/%m/%Y").date()
+    day_from_today_time_delta_obj = start_date_obj - todays_date
+    days_from_to_time_delta_obj = end_date_obj - start_date_obj
 
     if day_from_today_time_delta_obj.days >= 0 and days_from_to_time_delta_obj.days >= 0:
         connection = get_flask_database_connection(app)
@@ -121,8 +124,8 @@ def create_booking(id):
         booking = Booking(
             None,
             id,
-            date_from,
-            date_to,
+            start_date_obj.strftime("%Y-%m-%d"),
+            end_date_obj.strftime("%Y-%m-%d"),
             False,
             booker_id
         )

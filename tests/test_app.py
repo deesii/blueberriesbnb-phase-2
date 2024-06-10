@@ -1,5 +1,7 @@
 from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
+from lib.booking_repository import BookingRepository
+from lib.booking import Booking
 
 """
 We can render the index page
@@ -281,15 +283,27 @@ def test_get__individual_property(page, test_web_address, db_connection):
 """
 Booking is added when it is submitted via booking form
 """
-def test_add_booking(page, test_web_address, db_connection):
+def test_add_booking(page, test_web_address, db_connection, login):
     db_connection.seed("seeds/blueberries_bnb.sql")
     page.goto(f"http://{test_web_address}/properties/1")
-    page.screenshot(path="screenshot.png", full_page=True)
-    page.fill("input[name=date_from]", "2024-03-13")
-    page.screenshot(path="screenshot.png", full_page=True)
-    page.fill("input[name=date_to]", "2024-03-15")
-    page.screenshot(path="screenshot.png", full_page=True)
-    page.click("text=Create Booking")
+    page.click("input[name=start]")
+    page.get_by_role("cell", name="May").click()
+    page.get_by_text("Dec").click()
+    page.get_by_role("cell", name="1", exact=True).first.click()
+    # page.screenshot(path="screenshot.png", full_page=True)
+    page.click("input[name=end]")
+    # page.get_by_role("cell", name="May").click()
+    # page.get_by_text("Dec").click()
+    page.get_by_role("cell", name="3", exact=True).first.click()
+    # page.screenshot(path="screenshot.png", full_page=True)
+    page.click("#submit")
+    repository = BookingRepository(db_connection)
+    result = repository.list_booking_by_id(5)
+    assert result == [
+        Booking(5, 1, '2024-12-01', '2024-12-03', False, 1),
+    ]
+    # page.screenshot(path="screenshot.png", full_page=True)
+
 
 
 

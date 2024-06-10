@@ -11,19 +11,113 @@
     
     <p> 
         Description: {{property._description}}<br>
-    <div class = "book-property-card">
-        Price per night: £{{property._price_per_night}}
     </p>
+    <div class = "book-property-card">
+        <p>Price per night: £{{property._price_per_night}}</p>
 
-        <form action="/properties/{{property._id}}" method="post">
-            <label for="date_from">Date From: </label>
-            <input type="date" name="date_from" value="date_from">
-            <br>
-            <label for="date_to">Date To:</label>
-            <input type="date" name="date_to" value="date_to">
-            <br><br>
-            <input type="submit" value="Create Booking">
+        <form action="/properties/{{property._id}}" method="post" id="booking-form">
+                <label for="date_from">Date From: </label>
+                <div class="input-daterange input-group" id="datepicker">
+                    <input 
+                        type="text"
+                        class="form-control date-field" 
+                        name="start_date" 
+                        id="start_date" 
+                        placeholder="DD/MM/YYYY"
+                    >
+                    <div class="input-group-addon input-icon" id="input_icon_from">
+                        <span id="basic-addon1">
+                            <i class="fa-regular fa-calendar"></i>
+                        </span>
+                    </div>
+                    <span class="input-group-addon" id="date-separator"><label class="input-group-addon" for="date_to">To:</label></span>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="end_date" 
+                        id="end_date" 
+                        placeholder="DD/MM/YYYY"
+                    >
+                    <div class="input-group-addon input-icon" id="input_icon_end">
+                        <span id="basic-addon2">
+                            <i class="fa-regular fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            <input type="submit" value="Create Booking" id="submit">
             
         </form>
     </div>
+
+    <script>
+        $(document).ready(function() {
+
+            const datesTaken = {{dates_taken | tojson}};
+            let date = new Date();
+
+            $('#datepicker').datepicker({
+                format: "dd/mm/yyyy",
+                startDate: date,
+                todayBtn: "linked",
+                clearBtn: true,
+                todayHighlight: true,
+                datesDisabled: datesTaken,
+            });
+
+            $("#end_date").on("change", datesTaken, function() {
+                let dateFrom = $("#start_date").val();
+                let dateTo = $("#end_date").val();
+                if (dateFrom && dateTo) {
+                    dateFrom = DMYtoDate(dateFrom);
+                    dateTo= DMYtoDate(dateTo);
+                    while (dateFrom < dateTo) {
+                        let dateFromStr = dateToDMY(dateFrom);
+                        if (datesTaken.includes(dateFromStr)) {
+                            alert("Date " + dateFromStr + " in chosen range is already taken");
+                            $("#start_date").val("");
+                            $("#end_date").val("");
+                            break;
+                        }
+                        dateFrom.setDate(dateFrom.getDate() + 1);
+                    }
+                }
+            })
+
+            $("#input_icon_from").on("click", function(){
+                $("#start_date").datepicker("show");
+            })
+
+            $("#input_icon_end").on("click", function(){
+                $("#end_date").datepicker("show");
+            })
+
+            $("#booking-form").on("submit", function(){
+                let dateFrom = $("#start_date").val();
+                let dateTo = $("#end_date").val();
+                if (!dateFrom || !dateTo) {
+                    alert("Please select both dates");
+                    return false;
+                }
+
+            })
+            function dateToDMY(date) {
+                let dd = date.getDate();
+                let mm = date.getMonth() + 1;
+                let yyyy = date.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                return dd + '/' + mm + '/' + yyyy;
+            }
+
+            function DMYtoDate(dateString){
+                let parts = dateString.split("/");
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+        });
+    </script>
 {% endblock %}
