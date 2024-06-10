@@ -13,6 +13,9 @@ py = "*"
 playwright = "*"
 flask-session = "*"
 pandas = "*"
+python-dotenv = "*"
+gunicorn = "*"
+colorama = "*"
 
 [dev-packages]
 autopep8 = "*"

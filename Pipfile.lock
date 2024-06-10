@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4b7a2348a152e25d2790464f8e32a2fb3acd33a280345a7ba2125c43730aaea8"
+            "sha256": "a140ef050d3081e8040a1b2150d2d6fa36a1ce4a30b94a8e4d715044337d1377"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -144,6 +144,15 @@
             "markers": "python_version >= '3.7'",
             "version": "==8.1.7"
         },
+        "colorama": {
+            "hashes": [
+                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6'",
+            "version": "==0.4.6"
+        },
         "flask": {
             "hashes": [
                 "sha256:34e815dfaa43340d1d15a5c3a02b8476004037eb4840b34910c6e21679d288f3",
@@ -225,6 +234,15 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==3.0.3"
+        },
+        "gunicorn": {
+            "hashes": [
+                "sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9",
+                "sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==22.0.0"
         },
         "idna": {
             "hashes": [
@@ -565,6 +583,15 @@
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.9.0.post0"
         },
+        "python-dotenv": {
+            "hashes": [
+                "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca",
+                "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==1.0.1"
+        },
         "python-slugify": {
             "hashes": [
                 "sha256:276540b79961052b66b7d116620b36518847f52d5fd9e3a70164fc8c50faa6b8",
@@ -616,7 +643,7 @@
                 "sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd",
                 "sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252"
             ],
-            "markers": "python_version >= '2'",
+            "markers": "sys_platform == 'win32'",
             "version": "==2024.1"
         },
         "urllib3": {
